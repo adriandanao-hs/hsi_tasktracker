@@ -1,0 +1,19 @@
+.navbar {
+  @apply sticky top-0 flex justify-between items-center p-4 bg-gray-800 text-white z-10;
+}
+
+.logo {
+  @apply text-xl font-bold;
+}
+
+.logoImage {
+  @apply h-10 w-auto;
+}
+
+.navLinks {
+  @apply flex space-x-4;
+}
+
+.navLink {
+  @apply hover:underline;
+}
