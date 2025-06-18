@@ -8,6 +8,7 @@ import {
 
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import ProtectedLayout from "./components/ProtectedLayout";
 
 const RedirectToHomeIfLoggedIn = () => {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<RedirectToHomeIfLoggedIn />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route element={<ProtectedLayout />}>
             <Route path="/home" element={<Home />} />
