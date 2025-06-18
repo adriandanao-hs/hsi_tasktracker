@@ -1,10 +1,22 @@
-import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes";
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 10533;
+
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/hsi_tasktracker")
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  });
 
 app.use(
   cors({
