@@ -1,27 +1,71 @@
-.container {
-  @apply min-h-screen flex items-center justify-center bg-gray-800;
+.bgWrapper {
+  @apply min-h-screen flex items-center justify-center bg-blue-100;
+}
+
+.card {
+  @apply grid grid-cols-2 grid-rows-1 flex-row bg-white rounded-3xl shadow-2xl w-[60vw] h-[60vh];
+}
+
+.leftPanel {
+  @apply col-span-1 justify-center flex flex-col items-center ;
+}
+
+/* .logoBox {
+  @apply mb-1 ml-20 ;
+} */
+
+.brandName {
+  @apply text-5xl font-bold text-[#1a2341] font-serif mb-2 ml-10 drop-shadow-md;
+}
+
+.tagline {
+  @apply text-lg italic text-[#1a2341]/80 ml-10;
+}
+
+.rightPanel {
+  @apply col-span-1 justify-center flex flex-col;
 }
 
 .form {
-  @apply max-w-md w-full bg-gray-500 rounded-xl shadow-lg p-8 space-y-6;
+  @apply w-full max-w-md flex flex-col gap-5;
 }
 
-.heading {
-  @apply text-3xl font-bold mb-6 text-center text-yellow-500 bg-gray-800 rounded-md py-2;
-}
-
-.label {
-  @apply block mb-1 text-sm font-medium text-gray-800;
+.inputGroup {
+  @apply w-full;
 }
 
 .input {
-  @apply w-full px-4 py-2 pr-9 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200;
+  @apply w-full px-4 py-3 border border-gray-300 rounded-md text-base bg-gray-50 text-[#1a2341] transition-colors focus:outline-none focus:border-[#1a2341] focus:bg-white;
 }
 
-.submit {
-  @apply w-full bg-yellow-500 text-black font-semibold py-2 rounded-md hover:bg-yellow-600 transition duration-200;
+.passwordWrapper {
+  @apply relative w-full;
 }
 
 .showButton {
-  @apply absolute right-3 top-2/3 transform -translate-y-1/2 text-black hover:text-yellow-600 focus:outline-none;
+  @apply absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none text-[#1a2341] cursor-pointer p-2 z-20;
+}
+
+.forgotRow {
+  @apply flex justify-end -mt-3 mb-1;
+}
+
+.forgotLink {
+  @apply text-sm text-[#1a2341] opacity-80 hover:text-[#0d1333] hover:underline transition-colors;
+}
+
+.actionRow {
+  @apply flex items-center justify-end gap-5 mt-20;
+}
+
+.createAccount {
+  @apply text-base text-[#1a2341] opacity-90 hover:text-[#0d1333] hover:underline transition-colors;
+}
+
+.submit {
+  @apply bg-[#1a2341] text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
+}
+
+.error {
+  @apply text-red-600 text-base -mt-2 mb-2 text-center;
 }

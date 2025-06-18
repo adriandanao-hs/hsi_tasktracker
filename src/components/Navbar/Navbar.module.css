@@ -1,19 +1,40 @@
 .navbar {
-  @apply sticky top-0 flex justify-between items-center p-4 bg-gray-800 text-white z-10;
+  @apply fixed top-0 left-0 h-full w-20 flex flex-col justify-between items-center pt-6 bg-gray-800 text-white z-10;
+}
+
+.topSection {
+  @apply flex flex-col items-center space-y-6
 }
 
 .logo {
-  @apply text-xl font-bold;
+  @apply pb-6;
 }
 
 .logoImage {
-  @apply h-10 w-auto;
+  @apply h-10 w-auto rounded-md;
 }
 
 .navLinks {
-  @apply flex space-x-4;
+  @apply flex flex-col space-y-6;
+}
+
+.bottomLinks {
+  @apply flex flex-col space-y-6 mb-6
 }
 
 .navLink {
   @apply hover:underline;
+}
+
+.navItemStyle {
+  @apply flex flex-col items-center text-xs;
+}
+
+
+.icons {
+  @apply w-6 h-6
+}
+
+.iconText {
+  @apply text-xs text-center
 }
