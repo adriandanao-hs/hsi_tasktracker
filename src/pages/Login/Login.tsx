@@ -43,19 +43,22 @@ export default function Login() {
           <div className={styles.logoBox}>
             {/* Placeholder for logo SVG */}
             <svg
-              width="90"
-              height="70"
-              viewBox="0 0 90 70"
+              width="90px"
+              height="90px"
+              viewBox="0 0 25 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <polyline
-                points="10,60 35,35 55,55 75,25"
-                stroke="#1a2341"
-                strokeWidth="6"
-                fill="none"
-              />
-              <polygon points="75,25 85,25 85,15" fill="#1a2341" />
+              <path
+                d="M4.5 18.5L11.5 10.5L13.5 14.5L20.5 6.5"
+                stroke="#121923"
+                stroke-width="2"
+              ></path>
+              <path
+                d="M20.5 11V6.5H16"
+                stroke="#121923"
+                stroke-width="2"
+              ></path>
             </svg>
           </div>
           <div className={styles.brandName}>chrono</div>
@@ -99,9 +102,7 @@ export default function Login() {
               </div>
             </div>
             <div className={styles.forgotRow}>
-              <Link to="/forgot-password" className={styles.forgotLink}>
-                Forgot Password?
-              </Link>
+              <Link to="/forgot-password">Forgot Password?</Link>
             </div>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.actionRow}>

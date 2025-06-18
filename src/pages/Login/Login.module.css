@@ -10,16 +10,16 @@
   @apply col-span-1 justify-center flex flex-col items-center ;
 }
 
-/* .logoBox {
-  @apply mb-1 ml-20 ;
-} */
+.logoBox {
+  @apply w-full flex justify-center;
+}
 
 .brandName {
-  @apply text-5xl font-bold text-[#1a2341] font-serif mb-2 ml-10 drop-shadow-md;
+  @apply text-5xl font-bold text-[#1a2341] font-serif drop-shadow-md;
 }
 
 .tagline {
-  @apply text-lg italic text-[#1a2341]/80 ml-10;
+  @apply text-2xl italic text-[#1a2341]/80;
 }
 
 .rightPanel {
@@ -27,11 +27,11 @@
 }
 
 .form {
-  @apply w-full max-w-md flex flex-col gap-5;
+  @apply w-full flex flex-col gap-5;
 }
 
 .inputGroup {
-  @apply w-full;
+  @apply flex w-[75%];
 }
 
 .input {
@@ -47,15 +47,11 @@
 }
 
 .forgotRow {
-  @apply flex justify-end -mt-3 mb-1;
-}
-
-.forgotLink {
-  @apply text-sm text-[#1a2341] opacity-80 hover:text-[#0d1333] hover:underline transition-colors;
+  @apply flex justify-end w-[75%] text-sm text-[#1a2341] opacity-80 hover:text-[#0d1333] hover:underline transition-colors;
 }
 
 .actionRow {
-  @apply flex items-center justify-end gap-5 mt-20;
+  @apply flex items-center justify-end gap-5 w-[75%];
 }
 
 .createAccount {
