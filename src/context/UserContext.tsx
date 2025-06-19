@@ -9,6 +9,7 @@ import React, {
 interface User {
   name: string;
   email: string;
+  role: "Intern" | "Department Head" | "Supervisor";
 }
 
 interface UserContextType {
@@ -26,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:10533/api/auth/check", {
+        const response = await fetch("http://localhost:10533/api/auth/me", {
           credentials: "include",
         });
 

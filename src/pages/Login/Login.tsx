@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 
 export default function Login() {
@@ -42,8 +42,19 @@ export default function Login() {
         <div className={styles.leftPanel}>
           <div className={styles.logoBox}>
             {/* Placeholder for logo SVG */}
-            <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="10,60 35,35 55,55 75,25" stroke="#1a2341" strokeWidth="6" fill="none" />
+            <svg
+              width="90"
+              height="70"
+              viewBox="0 0 90 70"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                points="10,60 35,35 55,55 75,25"
+                stroke="#1a2341"
+                strokeWidth="6"
+                fill="none"
+              />
               <polygon points="75,25 85,25 85,15" fill="#1a2341" />
             </svg>
           </div>
@@ -84,16 +95,22 @@ export default function Login() {
                   ) : (
                     <EyeIcon className="w-5 h-5" />
                   )}
-                </button> 
+                </button>
               </div>
             </div>
             <div className={styles.forgotRow}>
-              <a href="#" className={styles.forgotLink}>Forgot Password?</a>
+              <Link to="/forgot-password" className={styles.forgotLink}>
+                Forgot Password?
+              </Link>
             </div>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.actionRow}>
-              <a href="#" className={styles.createAccount}>Create account</a>
-              <button type="submit" className={styles.submit}>Sign In</button>
+              <Link to="/register" className={styles.createAccount}>
+                Create account
+              </Link>
+              <button type="submit" className={styles.submit}>
+                Sign In
+              </button>
             </div>
           </form>
         </div>

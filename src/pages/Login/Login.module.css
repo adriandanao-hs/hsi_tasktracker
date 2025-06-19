@@ -3,16 +3,16 @@
 }
 
 .card {
-  @apply flex flex-row bg-white rounded-3xl shadow-2xl w-[90vw] max-w-[1100px] min-h-[500px] p-10 gap-8;
+  @apply grid grid-cols-2 grid-rows-1 flex-row bg-white rounded-3xl shadow-2xl w-[60vw] h-[60vh];
 }
 
 .leftPanel {
-  @apply basis-1/2 flex flex-col items-start justify-center pl-10;
+  @apply col-span-1 justify-center flex flex-col items-center ;
 }
 
-.logoBox {
+/* .logoBox {
   @apply mb-1 ml-20 ;
-}
+} */
 
 .brandName {
   @apply text-5xl font-bold text-[#1a2341] font-serif mb-2 ml-10 drop-shadow-md;
@@ -23,7 +23,7 @@
 }
 
 .rightPanel {
-  @apply basis-2/4 flex items-center justify-center mt-20;
+  @apply col-span-1 justify-center flex flex-col;
 }
 
 .form {

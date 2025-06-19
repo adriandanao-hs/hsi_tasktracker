@@ -1,0 +1,19 @@
+.container {
+    @apply bg-white shadow-md rounded-lg p-6 space-y-4 h-full
+}
+
+:global(.dark) .container {
+  @apply bg-gray-800;
+}
+
+.heading {
+    @apply text-2xl font-semibold text-gray-800
+}
+
+.subheading {
+    @apply text-gray-600
+}
+
+.welcomeText {
+    @apply text-blue-600 font-medium
+}

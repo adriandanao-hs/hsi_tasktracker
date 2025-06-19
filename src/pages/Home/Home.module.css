@@ -1,29 +1,20 @@
-/* Home.module.css */
-
 .container {
-  @apply min-h-screen flex flex-col items-center justify-center bg-gray-800 text-black p-4;
+  @apply w-[calc(100%-5rem)] min-h-screen transition-colors bg-white;
+  ;
+}
+/* When <html class="dark"> is set… */
+:global(.dark) .container {
+  @apply bg-gray-600;
 }
 
-.card {
-  @apply max-w-md w-full text-center bg-gray-500 rounded-xl shadow-lg p-8 space-y-6;
+.content {
+  @apply grid grid-cols-1 p-2 gap-2 w-full;
 }
 
 .heading {
-  @apply text-3xl font-bold mb-6 text-center text-yellow-500 bg-gray-800 rounded-md py-2;
+  @apply block w-full text-3xl font-bold text-black border-b-2 border-black;
 }
 
-.subheading {
-  @apply text-gray-800;
-}
-
-.buttonContainer {
-  @apply flex justify-center space-x-4;
-}
-
-.buttonPrimary {
-  @apply bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-md transition duration-200;
-}
-
-.buttonSecondary {
-  @apply border border-black hover:bg-gray-600 text-black font-semibold py-2 px-6 rounded-md transition duration-200;
+:global(.dark) .heading {
+  @apply text-yellow-500 border-yellow-500;
 }
