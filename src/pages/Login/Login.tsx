@@ -52,13 +52,9 @@ export default function Login() {
               <path
                 d="M4.5 18.5L11.5 10.5L13.5 14.5L20.5 6.5"
                 stroke="#121923"
-                stroke-width="2"
+                strokeWidth="2"
               ></path>
-              <path
-                d="M20.5 11V6.5H16"
-                stroke="#121923"
-                stroke-width="2"
-              ></path>
+              <path d="M20.5 11V6.5H16" stroke="#121923" strokeWidth="2"></path>
             </svg>
           </div>
           <div className={styles.brandName}>chrono</div>
