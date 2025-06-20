@@ -1,21 +1,16 @@
+import { actions } from "./navbarData";
 import styles from "./Navbar.module.css";
 import { useState, useEffect } from "react";
+import { useUser } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  HomeIcon,
-  ArrowRightEndOnRectangleIcon,
-  ArrowLeftEndOnRectangleIcon,
-  MoonIcon,
-  SunIcon,
-  BuildingOfficeIcon,
-  BuildingOffice2Icon,
-} from "@heroicons/react/24/outline";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
 import HSI_Logo from "../../images/HSI_Logo.jpg";
-import { useUser } from "../../context/UserContext";
+import default_avatart from "../../images/default-avatart.jpg";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
@@ -74,58 +69,28 @@ export default function Navbar() {
             />
           </Link>
         </div>
+
+        {/* Top  */}
+
         <ul className={styles.navLinks}>
-          <li>
-            <Link
-              to="/home"
-              className={`${styles.navLink} ${styles.navItemStyle}`}
-            >
-              <HomeIcon className={styles.icons} />
-              <span className={styles.iconText}>Home</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/home"
-              className={`${styles.navLink} ${styles.navItemStyle}`}
-            >
-              <BuildingOfficeIcon className={styles.icons} />
-              <span className={styles.iconText}>Major Department</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/home"
-              className={`${styles.navLink} ${styles.navItemStyle}`}
-            >
-              <BuildingOffice2Icon className={styles.icons} />
-              <span className={styles.iconText}>Minor Department</span>
-            </Link>
-          </li>
+          {(actions[user?.role as keyof typeof actions] || []).map((item) => {
+            return (
+              <li key={item.label} className={styles.navItem}>
+                <Link
+                  to={item.to}
+                  className={`${styles.navLink} ${styles.navItemStyle}`}
+                >
+                  <item.icon className={styles.icons} />
+                  <span className={styles.iconText}>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
       {/* Bottom Links */}
       <ul className={styles.bottomLinks}>
-        <li>
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className={`${styles.navLink} ${styles.navItemStyle}`}
-            >
-              <ArrowRightEndOnRectangleIcon className={styles.icons} />
-              <span>Logout</span>
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              className={`${styles.navLink} ${styles.navItemStyle}`}
-            >
-              <ArrowLeftEndOnRectangleIcon className={styles.icons} />
-              <span>Login</span>
-            </Link>
-          )}
-        </li>
         <li>
           <button
             onClick={() => setDarkMode((prev) => !prev)}
@@ -137,8 +102,45 @@ export default function Navbar() {
             ) : (
               <SunIcon className={styles.icons} />
             )}
-            <span>Theme</span>
+            <span className={styles.iconText}>Theme</span>
           </button>
+        </li>
+        <li>
+          <button
+            className={styles.profileContainer}
+            onClick={() => setSidebarOpen((prev) => !prev)}
+          >
+            <img
+              src={user!.photo || default_avatart}
+              alt="Profile"
+              className={styles.profileImage}
+            />
+          </button>
+
+          {sidebarOpen && (
+            <div
+              className={styles.sidebarOverlay}
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+          <div
+            className={`${styles.sidebar} ${
+              sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed
+            }`}
+          >
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="absolute top-2 right-2 text-lg font-bold"
+            >
+              &times;
+            </button>
+            <div className="flex flex-col mt-10">
+              <button className={styles.menuItems}>Profile</button>
+              <button onClick={handleLogout} className={styles.menuItems}>
+                Logout
+              </button>
+            </div>
+          </div>
         </li>
       </ul>
     </nav>

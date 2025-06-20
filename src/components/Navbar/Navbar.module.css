@@ -3,7 +3,7 @@
 }
 
 .topSection {
-  @apply flex flex-col items-center space-y-6
+  @apply flex flex-col items-center;
 }
 
 .logo {
@@ -15,26 +15,77 @@
 }
 
 .navLinks {
-  @apply flex flex-col space-y-6;
+  @apply flex flex-col;
 }
 
 .bottomLinks {
-  @apply flex flex-col space-y-6 mb-6
+  @apply flex flex-col items-center pb-2;
 }
 
 .navLink {
-  @apply hover:underline;
+  @apply hover:bg-gray-900 hover:rounded-lg mt-[0.25] mx-1 py-1 h-16 w-16 flex justify-center items-center;
 }
 
 .navItemStyle {
-  @apply flex flex-col items-center text-xs;
+  @apply flex flex-col items-center text-lg;
 }
 
-
 .icons {
-  @apply w-6 h-6
+  @apply w-6 h-6;
 }
 
 .iconText {
-  @apply text-xs text-center
+  @apply text-xs text-center hidden;
+}
+
+.navLink:hover .iconText {
+  @apply block;
+}
+
+.profileContainer {
+  @apply flex items-center gap-2 p-2 outline-none focus:outline-none hover:bg-gray-900 hover:rounded-lg;
+}
+
+:global(.dark) .navbar {
+  @apply bg-gray-700;
+}
+
+.profileImage {
+  @apply w-10 h-auto rounded-full border-none transition-all duration-150;
+}
+
+.profileItems {
+  @apply absolute left-full top-0 ml-2 w-40 rounded bg-gray-400 border border-black shadow-lg;
+}
+
+:global(.dark) .profileItems {
+  @apply bg-gray-800;
+}
+
+.menuItems {
+  @apply block w-full px-4 py-2 text-lg text-left text-black hover:bg-gray-500;
+}
+
+:global(.dark) .menuItems {
+  @apply text-white hover:bg-gray-900;
+}
+
+.sidebar {
+  @apply fixed top-0 left-0 h-full w-64 bg-white border-l border-gray-200 transform transition-transform duration-300 z-50;
+}
+
+:global(.dark) .sidebar {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.sidebarOpen {
+  @apply translate-x-0;
+}
+
+.sidebarClosed {
+  @apply -translate-x-full;
+}
+
+.sidebarOverlay {
+  @apply fixed inset-0 bg-black bg-opacity-30 z-40;
 }

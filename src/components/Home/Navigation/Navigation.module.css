@@ -1,19 +1,39 @@
 .container {
-    @apply bg-white shadow-md rounded-lg p-6 space-y-4 h-full
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2;
 }
 
-:global(.dark) .container {
-  @apply bg-gray-800;
+.cardContainer {
+  @apply rounded-lg p-4 bg-gray-800 drop-shadow-md hover:drop-shadow-xl transition-shadow duration-300;
 }
 
-.heading {
-    @apply text-2xl font-semibold text-gray-800
+.actions {
+  @apply flex gap-2 items-center my-4;
 }
 
-.subheading {
-    @apply text-gray-600
+.actionButton {
+  @apply px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-blue-700 flex flex-row;
 }
 
-.welcomeText {
-    @apply text-blue-600 font-medium
+.icons {
+  @apply w-6 h-6 pr-1;
+}
+
+.announcementWrapper {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4;
+}
+
+.title {
+  @apply text-2xl font-semibold text-white mb-2;
+}
+
+.announcementHeader {
+  @apply text-xl font-bold mb-2 text-white;
+}
+
+.announcementBody {
+  @apply text-base mb-2 text-white;
+}
+
+.announcementMeta {
+  @apply text-sm text-gray-400;
 }
