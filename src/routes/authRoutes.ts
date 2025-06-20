@@ -31,9 +31,16 @@ router.post("/login", async (req, res) => {
     res.status(401).json({ message: "Invalid credentials" });
     return;
   }
+  console.log(user._id);
 
   const token = jwt.sign(
-    { _id: user!._id, email: user!.email, name: user!.name, role: user!.role },
+    {
+      _id: user!._id,
+      email: user!.email,
+      name: user!.name,
+      role: user!.role,
+      department: user!.department,
+    },
     JWT_SECRET,
     { expiresIn: "1h" }
   );
@@ -45,7 +52,14 @@ router.post("/login", async (req, res) => {
       sameSite: "strict",
       maxAge: 3600000, // 1 hour
     })
-    .json({ user: { name: user!.name, email: user!.email, role: user!.role } });
+    .json({
+      user: {
+        name: user!.name,
+        email: user!.email,
+        role: user!.role,
+        department: user!.department,
+      },
+    });
   return;
 });
 
@@ -80,13 +94,16 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
     return;
   }
-})
+});
 
 // GET /api/auth/check
 router.get("/me", (req, res) => {
   const token = req.cookies?.[COOKIE_NAME];
 
-  if (!token) res.status(401).json({ message: "Unauthorized" });
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
 
   try {
     const user = jwt.verify(token, JWT_SECRET) as any;

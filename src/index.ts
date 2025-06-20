@@ -3,7 +3,10 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+
+import fetchTasks from "./routes/fetchTasks";
 import authRoutes from "./routes/authRoutes";
+import announcementRoutes from "./routes/announcementRoutes";
 
 dotenv.config();
 
@@ -11,7 +14,9 @@ const app = express();
 const PORT = process.env.PORT || 10533;
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/hsi_tasktracker")
+  .connect(
+    process.env.MONGODB_URI || "mongodb://localhost:27017/hsi_tasktracker"
+  )
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => {
     console.error("Failed to connect to MongoDB:", err);
@@ -40,6 +45,8 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/fetchTasks", fetchTasks);
+app.use("/api/announcement", announcementRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
