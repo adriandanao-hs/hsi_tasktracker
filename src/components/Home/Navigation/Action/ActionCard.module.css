@@ -1,0 +1,26 @@
+.link {
+  @apply p-4
+  flex
+  shadow
+  space-x-4
+  rounded-xl
+  transition
+  font-medium
+  items-center
+  bg-gray-100
+  text-gray-700
+  hover:text-white
+  hover:bg-gray-600;
+}
+
+:global(.dark) .link {
+  @apply bg-gray-900 text-white hover:text-gray-900 hover:bg-gray-100;
+}
+
+.subtitle {
+  @apply text-gray-200 text-sm;
+}
+
+.title {
+  @apply text-gray-200 text-lg font-bold;
+}
