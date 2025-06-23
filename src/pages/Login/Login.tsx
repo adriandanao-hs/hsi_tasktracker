@@ -3,6 +3,7 @@ import styles from "./Login.module.css";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import ChronoLogo from '../../images/chrono_logo.png';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -41,24 +42,9 @@ export default function Login() {
         {/* Left: Logo and tagline */}
         <div className={styles.leftPanel}>
           <div className={styles.logoBox}>
-            {/* Placeholder for logo SVG */}
-            <svg
-              width="90"
-              height="70"
-              viewBox="0 0 90 70"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polyline
-                points="10,60 35,35 55,55 75,25"
-                stroke="#1a2341"
-                strokeWidth="6"
-                fill="none"
-              />
-              <polygon points="75,25 85,25 85,15" fill="#1a2341" />
-            </svg>
+            <img src={ChronoLogo} alt="Chrono Logo" className={styles.logoImage} />
           </div>
-          <div className={styles.brandName}>chrono</div>
+
           <div className={styles.tagline}>Tagline</div>
         </div>
         {/* Right: Login form */}

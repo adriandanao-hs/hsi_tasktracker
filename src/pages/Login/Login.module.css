@@ -19,7 +19,9 @@
 }
 
 .tagline {
-  @apply text-lg italic text-[#1a2341]/80 ml-10;
+  @apply text-base text-gray-500 mt-2 font-medium tracking-wide p-2 ;
+  margin-right: 150px;
+
 }
 
 .rightPanel {
@@ -69,3 +71,8 @@
 .error {
   @apply text-red-600 text-base -mt-2 mb-2 text-center;
 }
+
+.logoImage {
+  @apply  h-auto block max-w-md p-1; width:250px ;
+}
+

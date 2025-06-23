@@ -12,7 +12,8 @@ import {
   DocumentIcon,
 } from "@heroicons/react/24/outline";
 
-import HSI_Logo from "../../images/HSI_Logo.jpg";
+import ChronoLogo from "../../images/chrono_logo.png";
+import ChronoLogoWhite from '../../images/chrono_logowhite.png';
 import { useUser } from "../../context/UserContext";
 
 export default function Navbar() {
@@ -67,12 +68,10 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.topSection}>
         <div className={styles.logo}>
-          <Link to="/">
-            <img
-              src={HSI_Logo}
-              alt="Task Tracker"
-              className={styles.logoImage}
-            />
+          <Link to="/" className={styles.logoLink}>
+            <div className={styles.logoBox}>
+              <img src={ChronoLogoWhite} alt="Chrono Logo White" className={styles.logoImage} />
+            </div>
           </Link>
         </div>
         <ul className={styles.navLinks}>
@@ -82,7 +81,7 @@ export default function Navbar() {
               className={`${styles.navLink} ${styles.navItemStyle}`}
             >
               <HomeIcon className={styles.icons} />
-              <span className={styles.iconText}>Intern</span>
+              <span className={styles.iconText}>Dashboard</span>
             </Link>
           </li>
           <li>
@@ -136,7 +135,7 @@ export default function Navbar() {
             </Link>
           )}
         </li>
-        <li>
+      <li>
           <button
             onClick={() => setDarkMode((prev) => !prev)}
             className={`${styles.navLink} ${styles.navItemStyle}`}

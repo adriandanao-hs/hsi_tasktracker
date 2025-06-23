@@ -1,29 +1,26 @@
 .navbar {
-  @apply fixed top-0 left-0 h-full w-20 flex flex-col justify-between items-center pt-6 bg-navyblue text-white ;
+  @apply fixed top-0 left-0 h-full  flex flex-col justify-between items-center pt-9 bg-navyblue text-white z-10;
+  width:80px;
 }
 
 .topSection {
-  @apply flex flex-col items-center space-y-6
-}
-
-.logo {
-  @apply pb-6;
+  @apply flex flex-col items-center space-y-10
 }
 
 .logoImage {
-  @apply h-10 w-auto rounded-md;
+  @apply  h-12 block max-w-md p-1 ;
 }
 
 .navLinks {
-  @apply flex flex-col space-y-6;
+  @apply flex flex-col space-y-5  ;
 }
 
 .bottomLinks {
-  @apply flex flex-col space-y-6 mb-6
+  @apply flex flex-col space-y-5 mb-5
 }
 
 .navLink {
-  @apply hover:underline;
+  @apply p-1  transition-colors duration-200 hover:bg-white hover:text-navyblue;
 }
 
 .navItemStyle {
@@ -32,9 +29,23 @@
 
 
 .icons {
-  @apply w-6 h-6
+  @apply w-7 h-7
 }
 
 .iconText {
-  @apply text-xs text-center
+  @apply  text-center; font-size: 12px;
+}
+
+.logoLink {
+  @apply flex flex-col items-center no-underline;
+}
+
+.logoBox {
+  @apply w-9 h-9 flex items-center justify-center;
+}
+
+.logoText {
+  @apply text-white font-bold text-base mt-0 lowercase;
+  font-family: "Segoe UI", "Arial", sans-serif;
+  letter-spacing: 1px;
 }

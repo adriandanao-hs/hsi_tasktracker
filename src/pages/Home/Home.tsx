@@ -11,9 +11,7 @@ export default function Home() {
           <div>
             <h1 className={styles.heading}>Dashboard</h1>
           </div>
-          <div className="row-start-2">
-            <Navigation />
-          </div>
+         
         </div>
       </div>
     </>

@@ -2,7 +2,11 @@ import { DocumentTextIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
 
 export const actions = {
   Intern: [
-  
+    //{ label: "Daily Report", to: "/report/daily", icon: DocumentTextIcon },
+    //{ label: "Weekly Report", to: "/report/weekly", icon: CalendarDaysIcon },
+    //{ label: "Monthly Report", to: "/report/monthly", icon: CalendarDaysIcon },
+    //{ label: "Time In / Time Out", to: "/attendance", icon: CalendarDaysIcon },
+    //{ label: "My Departments", to: "/departments", icon: CalendarDaysIcon },
   ],
   "Department Head": [
     { label: "Intern List", to: "/interns", icon: CalendarDaysIcon },

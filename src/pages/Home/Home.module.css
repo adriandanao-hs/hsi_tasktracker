@@ -8,11 +8,12 @@
 }
 
 .content {
-  @apply grid grid-cols-1 p-2 gap-2 w-full;
+  @apply grid grid-cols-1 p-5 w-full;
+  margin-right:100px; margin-top: 40px
 }
 
 .heading {
-  @apply block w-full text-3xl font-bold text-black border-b-2 border-black;
+  @apply block w-full text-3xl font-bold text-gray-700 border-b-2 border-gray-300;
 }
 
 :global(.dark) .heading {
