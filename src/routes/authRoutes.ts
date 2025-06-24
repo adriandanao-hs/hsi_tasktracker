@@ -31,7 +31,6 @@ router.post("/login", async (req, res) => {
     res.status(401).json({ message: "Invalid credentials" });
     return;
   }
-  console.log(user._id);
 
   const token = jwt.sign(
     {
@@ -64,9 +63,9 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { email, password, name, role } = req.body;
+  const { email, password, name, role, department } = req.body;
 
-  if (!email || !password || !name || !role) {
+  if (!email || !password || !name || !role || !department) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
@@ -83,6 +82,7 @@ router.post("/register", async (req, res) => {
     passwordHash,
     name,
     role,
+    department,
   });
 
   try {
