@@ -5,35 +5,52 @@ const Register: React.FC = () => {
     name: "",
     email: "",
     password: "",
-    role: "Intern", // Default role
+    role: "Intern",
+    department: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setForm({ ...form, role: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    fetch("http://localhost:10533/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:10533/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed");
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div style={{ maxWidth: 400, margin: "2rem auto" }}>
       <h2>Register</h2>
+
       {submitted ? (
-        <div>Registration successful!</div>
+        <div style={{ color: "green" }}>Registration successful!</div>
       ) : (
         <form onSubmit={handleSubmit}>
           <div>
@@ -90,8 +107,30 @@ const Register: React.FC = () => {
               </select>
             </label>
           </div>
-          <button type="submit" style={{ marginTop: "1rem" }}>
-            Register
+          <div>
+            <label>
+              Department:
+              <select
+                name="department"
+                value={form.department}
+                onChange={handleSelectChange}
+                required
+              >
+                <option value="">-- Select Department --</option>
+                <option value="Web Dev">Web Dev</option>
+                <option value="Sys Ad">Sys Ad</option>
+              </select>
+            </label>
+          </div>
+
+          {error && <div style={{ color: "red" }}>{error}</div>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{ marginTop: "1rem" }}
+          >
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
       )}

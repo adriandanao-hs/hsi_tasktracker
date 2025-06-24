@@ -82,15 +82,17 @@ export default function Navigation() {
   if (loading || fetching) return <div>Loading...</div>;
   if (!user) return null;
 
+  const role = user?.role as keyof typeof actions;
+
   return (
     <>
       {showAnnouncementModal && (
         <AnnouncementModal onClose={() => setShowAnnouncementModal(false)} />
       )}
 
-      {user?.role === "Department Head" && (
+      {user?.role && (
         <ul className={styles.actions}>
-          {(actions["Department Head"] || []).map((action) => (
+          {(actions[role] || []).map((action) => (
             <li key={action.label}>
               <button
                 className={styles.actionButton}
@@ -111,40 +113,48 @@ export default function Navigation() {
         <>
           <h2 className={styles.title}>Announcements</h2>
           <div className={styles.announcementWrapper}>
-            {announcements.map((a) => (
-              <div key={a._id} className={styles.cardContainer}>
-                <h3 className={styles.announcementHeader}>{a.title}</h3>
-                <p className={styles.announcementBody}>{a.message}</p>
-                <p className={styles.announcementMeta}>
-                  Posted by: {a.user.name} on{" "}
-                  {new Date(a.createdAt).toLocaleDateString("en-PH", {
+            <div className="flex gap-4 w-max">
+              {announcements.map((a) => (
+                <div key={a._id} className={styles.cardContainer}>
+                  <h3 className={styles.announcementHeader}>
+                    {a.title}
+                    <p className={styles.announcementMeta}>
+                      {a.departments.join(", ")}
+                    </p>
+                  </h3>
+                  <p className={styles.announcementBody}>{a.message}</p>
+                  <p className={styles.announcementMeta}>
+                    {a.user.name} -{" "}
+                    {new Date(a.createdAt).toLocaleDateString("en-PH", {
+                      dateStyle: "medium",
+                    })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {tasks.length > 0 && (
+        <>
+          <h2 className={styles.title}>Tasks</h2>
+          <div className={styles.container}>
+            {tasks.map((task) => (
+              <div key={task._id} className={styles.cardContainer}>
+                <ActionCard
+                  {...task}
+                  dayTime={new Date(task.dayTime!).toLocaleString("en-PH", {
                     dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: "Asia/Manila",
                   })}
-                </p>
-                <p className={styles.announcementMeta}>
-                  Departments: {a.departments.join(", ")}
-                </p>
+                />
               </div>
             ))}
           </div>
         </>
       )}
-
-      <h2 className={styles.title}>Tasks</h2>
-      <div className={styles.container}>
-        {tasks.map((task) => (
-          <div key={task._id} className={styles.cardContainer}>
-            <ActionCard
-              {...task}
-              dayTime={new Date(task.dayTime!).toLocaleString("en-PH", {
-                dateStyle: "medium",
-                timeStyle: "short",
-                timeZone: "Asia/Manila",
-              })}
-            />
-          </div>
-        ))}
-      </div>
     </>
   );
 }

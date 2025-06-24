@@ -1,3 +1,4 @@
+import React from "react";
 import { actions } from "./navbarData";
 import styles from "./Navbar.module.css";
 import { useState, useEffect } from "react";
@@ -5,8 +6,9 @@ import { useUser } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
-import HSI_Logo from "../../images/HSI_Logo.jpg";
+import ChronoLogo from "../../images/chrono_logo.png";
 import default_avatart from "../../images/default-avatart.jpg";
+import ChronoLogoWhite from "../../images/chrono_logo_white.png";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
@@ -61,12 +63,14 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.topSection}>
         <div className={styles.logo}>
-          <Link to="/">
-            <img
-              src={HSI_Logo}
-              alt="Task Tracker"
-              className={styles.logoImage}
-            />
+          <Link to="/" className={styles.logoLink}>
+            <div className={styles.logoBox}>
+              <img
+                src={ChronoLogoWhite}
+                alt="Task Tracker"
+                className={styles.logoImage}
+              />
+            </div>
           </Link>
         </div>
 
@@ -81,7 +85,14 @@ export default function Navbar() {
                   className={`${styles.navLink} ${styles.navItemStyle}`}
                 >
                   <item.icon className={styles.icons} />
-                  <span className={styles.iconText}>{item.label}</span>
+                  <span className={styles.iconText}>
+                    {item.label.split(" ").map((word, index) => (
+                      <React.Fragment key={index}>
+                        {word}
+                        {index < item.label.split(" ").length - 1 && <br />}
+                      </React.Fragment>
+                    ))}
+                  </span>
                 </Link>
               </li>
             );

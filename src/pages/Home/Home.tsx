@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className={`flex-1 ml-20 ${styles.container}`}>
+      <div className={`flex-1 ml-[56px] ${styles.container}`}>
         <div className={styles.content}>
           <div>
             <h1 className={styles.heading}>Dashboard</h1>

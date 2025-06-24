@@ -1,29 +1,25 @@
 .navbar {
-  @apply fixed top-0 left-0 h-full w-20 flex flex-col justify-between items-center pt-6 bg-gray-800 text-white z-10;
-}
-
-.topSection {
-  @apply flex flex-col items-center;
+  @apply fixed top-0 left-0 h-full flex flex-col justify-between items-center bg-navyblue text-white z-10;
 }
 
 .logo {
-  @apply pb-6;
+  @apply flex flex-col items-center;
 }
 
 .logoImage {
-  @apply h-10 w-auto rounded-md;
+  @apply h-12 block max-w-md p-1;
 }
 
 .navLinks {
-  @apply flex flex-col;
+  @apply flex flex-col space-y-1;
 }
 
 .bottomLinks {
-  @apply flex flex-col items-center pb-2;
+  @apply flex flex-col items-center space-y-1 pb-2;
 }
 
 .navLink {
-  @apply hover:bg-gray-900 hover:rounded-lg mt-[0.25] mx-1 py-1 h-16 w-16 flex justify-center items-center;
+  @apply p-1 transition-colors duration-200 hover:bg-white rounded-md hover:text-navyblue;
 }
 
 .navItemStyle {
@@ -31,23 +27,27 @@
 }
 
 .icons {
-  @apply w-6 h-6;
+  @apply w-7 h-7;
 }
 
 .iconText {
-  @apply text-xs text-center hidden;
+  @apply text-xs text-center;
 }
 
-.navLink:hover .iconText {
-  @apply block;
+.logoLink {
+  @apply flex flex-col items-center no-underline;
+}
+
+.logoBox {
+  @apply w-9 h-auto flex items-center justify-center;
 }
 
 .profileContainer {
-  @apply flex items-center gap-2 p-2 outline-none focus:outline-none hover:bg-gray-900 hover:rounded-lg;
+  @apply flex items-center gap-2 p-1 m-1 outline-none focus:outline-none hover:bg-white hover:rounded-lg;
 }
 
 :global(.dark) .navbar {
-  @apply bg-gray-700;
+  @apply bg-navyblue;
 }
 
 .profileImage {

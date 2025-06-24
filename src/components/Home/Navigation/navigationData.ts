@@ -1,7 +1,7 @@
 import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 
 export const actions = {
-  Intern: [null],
+  Intern: [{ label: "Attendance", to: "/attendance", icon: CalendarDaysIcon }],
   "Department Head": [
     { label: "Announcement", to: "/announcement", icon: CalendarDaysIcon },
     { label: "Task", to: "/tasks", icon: CalendarDaysIcon },
@@ -12,4 +12,4 @@ export const actions = {
   //     { label: "View Weekly Reports", to: "/reports/weekly", icon: "📆" },
   //     { label: "View Monthly Reports", to: "/reports/monthly", icon: "📊" },
   //   ],
-};
+} as const;

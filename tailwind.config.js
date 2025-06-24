@@ -1,9 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class', // Enable dark mode support
+  // Enable dark mode support
   content: ["./src/**/*.{js,ts,jsx,tsx,css}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        navyblue: {
+          DEFAULT: "#162144",
+          light: "#2a3b5c", // Lighter navy blue for hover states
+        },
+      },
+    },
   },
   plugins: [],
 };

@@ -9,7 +9,11 @@ import {
 export const actions = {
   Intern: [
     { label: "Home", to: "/home", icon: HomeIcon },
-    { label: "Major Dept.", to: "/department/major", icon: BuildingOfficeIcon },
+    {
+      label: `Major Dept.`,
+      to: "/department/major",
+      icon: BuildingOfficeIcon,
+    },
     {
       label: "Minor Dept.",
       to: "/department/minor",
@@ -19,7 +23,7 @@ export const actions = {
   ],
   "Department Head": [
     { label: "Home", to: "/home", icon: HomeIcon },
-    { label: "Department", to: "/tasks", icon: BuildingOfficeIcon },
+    { label: "Dept.", to: "/tasks", icon: BuildingOfficeIcon },
     { label: "Intern List", to: "/interns", icon: UserGroupIcon },
     { label: "Daily Reports", to: "/reports/daily", icon: DocumentTextIcon },
   ],

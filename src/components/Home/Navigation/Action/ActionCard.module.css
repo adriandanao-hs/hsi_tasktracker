@@ -14,7 +14,7 @@
 }
 
 :global(.dark) .link {
-  @apply bg-gray-900 text-white hover:text-gray-900 hover:bg-gray-100;
+  @apply bg-navyblue-light text-white hover:text-navyblue hover:bg-gray-100;
 }
 
 .subtitle {

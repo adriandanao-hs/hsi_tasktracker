@@ -1,9 +1,9 @@
 .container {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2;
+  @apply grid sm:grid-cols-1 lg:grid-cols-4 gap-4 mt-2;
 }
 
 .cardContainer {
-  @apply rounded-lg p-4 bg-gray-800 drop-shadow-md hover:drop-shadow-xl transition-shadow duration-300;
+  @apply inline-block align-top rounded-lg p-4 bg-navyblue drop-shadow-md hover:drop-shadow-xl transition-shadow duration-300 min-w-[300px] mr-4;
 }
 
 .actions {
@@ -11,7 +11,7 @@
 }
 
 .actionButton {
-  @apply px-4 py-2 bg-gray-800 text-white rounded-full hover:bg-blue-700 flex flex-row;
+  @apply px-4 py-2 bg-navyblue text-white rounded-full hover:bg-white hover:text-navyblue flex flex-row;
 }
 
 .icons {
@@ -19,11 +19,28 @@
 }
 
 .announcementWrapper {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-4 overflow-x-auto whitespace-nowrap;
+}
+
+/* Custom scrollbar for modern browsers */
+.announcementWrapper::-webkit-scrollbar {
+  @apply h-1 rounded-full;
+}
+
+.announcementWrapper::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 rounded-full;
+}
+
+.announcementWrapper::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
 }
 
 .title {
-  @apply text-2xl font-semibold text-white mb-2;
+  @apply text-2xl font-semibold text-navyblue mb-2;
+}
+
+:global(.dark) .title {
+  @apply text-white;
 }
 
 .announcementHeader {

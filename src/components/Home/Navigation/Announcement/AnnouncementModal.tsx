@@ -4,7 +4,7 @@ interface AnnouncementModalProps {
   onClose: () => void;
 }
 
-const departments = ["Web Dev", "Sys Ad"]; // Example departments
+const departments = ["Web Development", "System Administration"]; // Example departments
 
 export default function AnnouncementModal({ onClose }: AnnouncementModalProps) {
   const [title, setTitle] = useState("");
