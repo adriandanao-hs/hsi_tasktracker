@@ -4,7 +4,10 @@ interface AnnouncementModalProps {
   onClose: () => void;
 }
 
-const departments = ["Web Development", "System Administration"]; // Example departments
+const departments = ["Web Development","Mobile Development","Project Management",
+  "Quality Assurance","Graphics Design","System Administration","Admin/Accounting, and Finance",
+  "IT Sales","Marketing Unleash","Human Resource","PS Docu Task","E-commerce Unleash",
+  "Game Development","Unleash Game Dev","Unleash Web Dev","Unleash L1","Unleash Ops","Unleash GFX"]; // Example departments
 
 export default function AnnouncementModal({ onClose }: AnnouncementModalProps) {
   const [title, setTitle] = useState("");
@@ -67,7 +70,7 @@ export default function AnnouncementModal({ onClose }: AnnouncementModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md shadow-lg"
+        className="bg-white dark:bg-white-100 p-6 rounded-lg w-full max-w-md shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-bold mb-4">Post Announcement</h2>

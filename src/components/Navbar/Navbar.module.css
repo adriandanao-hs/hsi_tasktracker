@@ -1,17 +1,17 @@
 .navbar {
-  @apply fixed top-0 left-0 h-full flex flex-col justify-between items-center bg-navyblue text-white z-10;
+  @apply fixed top-0 left-0 h-full w-20 flex flex-col justify-between items-center bg-navyblue text-white z-10;
 }
 
 .logo {
-  @apply flex flex-col items-center;
+  @apply flex flex-col items-center p-5;
 }
 
 .logoImage {
-  @apply h-12 block max-w-md p-1;
+  @apply h-12 block max-w-md;
 }
 
 .navLinks {
-  @apply flex flex-col space-y-1;
+  @apply flex flex-col space-y-2  ;
 }
 
 .bottomLinks {
@@ -19,15 +19,15 @@
 }
 
 .navLink {
-  @apply p-1 transition-colors duration-200 hover:bg-white rounded-md hover:text-navyblue;
+  @apply  p-1 transition-colors duration-200 hover:bg-white  hover:text-navyblue ;
 }
 
 .navItemStyle {
-  @apply flex flex-col items-center text-lg;
+  @apply flex flex-col items-center text-lg ;
 }
 
 .icons {
-  @apply w-7 h-7;
+  @apply w-8 h-8;
 }
 
 .iconText {
@@ -39,7 +39,7 @@
 }
 
 .logoBox {
-  @apply w-9 h-auto flex items-center justify-center;
+  @apply w-10 h-auto flex items-center justify-center;
 }
 
 .profileContainer {
