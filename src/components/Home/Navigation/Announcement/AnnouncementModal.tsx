@@ -1,56 +1,143 @@
 import { FormEvent, useState } from "react";
+import styles from "./AnnouncementModal.module.css";
 
 interface AnnouncementModalProps {
   onClose: () => void;
+  onSuccess?: () => void;
+  userDepartments: string[]; // User's departments to filter available options
 }
 
-const departments = ["Web Development", "System Administration"]; // Example departments
+interface AnnouncementData {
+  title: string;
+  message: string;
+  departments: string[];
+  expiresAt?: string; // ISO string for expiration date
+}
 
-export default function AnnouncementModal({ onClose }: AnnouncementModalProps) {
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+const DEPARTMENTS = [
+  "Web Development",
+  "Mobile Development",
+  "Project Management",
+  "Quality Assurance",
+  "Graphics Design",
+  "System Administration",
+  "Admin/Accounting, and Finance",
+  "IT Sales",
+  "Marketing Unleash",
+  "Human Resource",
+  "PS Docu Task",
+  "E-commerce Unleash",
+  "Game Development",
+  "Unleash Game Dev",
+  "Unleash Web Dev",
+  "Unleash L1",
+  "Unleash Ops",
+  "Unleash GFX",
+] as const;
+
+export default function AnnouncementModal({
+  onClose,
+  onSuccess,
+  userDepartments,
+}: AnnouncementModalProps) {
+  const [formData, setFormData] = useState<AnnouncementData>({
+    title: "",
+    message: "",
+    departments: [],
+    expiresAt: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
 
-  const handleDepartmentChange = (e: FormEvent<HTMLSelectElement>) => {
-    const options = e.currentTarget.options;
-    const selected: string[] = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selected.push(options[i].value);
-      }
-    }
-    setSelectedDepartments(selected);
+  // Filter departments to only show those relevant to the user
+  const availableDepartments = DEPARTMENTS.filter((dept) =>
+    userDepartments.includes(dept)
+  );
+
+  const handleInputChange = (
+    field: keyof AnnouncementData,
+    value: string | string[]
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+    // Clear error when user starts typing
+    if (error) setError("");
+  };
+
+  const handleDepartmentToggle = (department: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      departments: prev.departments.includes(department)
+        ? prev.departments.filter((d) => d !== department)
+        : [...prev.departments, department],
+    }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!formData.title.trim() || !formData.message.trim()) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    if (formData.departments.length === 0) {
+      setError("Please select at least one department");
+      return;
+    }
+
+    // Validate expiration date if provided
+    if (formData.expiresAt) {
+      const expirationDate = new Date(formData.expiresAt);
+      const now = new Date();
+
+      if (expirationDate <= now) {
+        setError("Expiration date must be in the future");
+        return;
+      }
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("http://localhost:10533/api/announcement/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          message,
-          departments: selectedDepartments,
-        }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        "http://localhost:10533/api/announcement/post",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: formData.title.trim(),
+            message: formData.message.trim(),
+            departments: formData.departments,
+            expiresAt: formData.expiresAt || undefined,
+          }),
+          credentials: "include",
+        }
+      );
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Failed to post announcement");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to post announcement");
       }
 
-      setTitle("");
-      setMessage("");
-      setSelectedDepartments([]);
+      // Reset form and close modal
+      setFormData({
+        title: "",
+        message: "",
+        departments: [],
+        expiresAt: "",
+      });
+
+      // Call the success callback to refresh announcements
+      if (onSuccess) {
+        onSuccess();
+      }
+
       onClose();
     } catch (err: any) {
       setError(
@@ -61,71 +148,163 @@ export default function AnnouncementModal({ onClose }: AnnouncementModalProps) {
     }
   };
 
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  // Get minimum date (today) for expiration date input
+  const getMinDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md shadow-lg"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold mb-4">Post Announcement</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border rounded"
-            required
-          />
-          <textarea
-            placeholder="Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-4 py-2 border rounded"
-            required
-          ></textarea>
-          <div className="border rounded px-4 py-2">
-            <label className="block font-medium mb-1">Departments:</label>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {departments.map((department) => (
-                <label key={department} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={department}
-                    checked={selectedDepartments.includes(department)}
-                    onChange={(e) => {
-                      const isChecked = e.target.checked;
-                      setSelectedDepartments((prev) =>
-                        isChecked
-                          ? [...prev, department]
-                          : prev.filter((d) => d !== department)
-                      );
-                    }}
-                  />
-                  <span>{department}</span>
-                </label>
-              ))}
-            </div>
+    <div className={styles.overlay} onClick={handleOverlayClick}>
+      <div className={styles.modal}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>Post Announcement</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className={styles.closeButton}
+            aria-label="Close modal"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="title" className={styles.label}>
+              Title *
+            </label>
+            <input
+              id="title"
+              type="text"
+              placeholder="Enter announcement title"
+              value={formData.title}
+              onChange={(e) => handleInputChange("title", e.target.value)}
+              className={styles.input}
+              required
+              disabled={loading}
+            />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div className="flex justify-end gap-2">
+          <div className={styles.formGroup}>
+            <label htmlFor="message" className={styles.label}>
+              Message *
+            </label>
+            <textarea
+              id="message"
+              placeholder="Enter announcement message"
+              value={formData.message}
+              onChange={(e) => handleInputChange("message", e.target.value)}
+              className={styles.textarea}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className={styles.departmentsContainer}>
+            <label className={styles.departmentsLabel}>
+              Select Departments *
+              <span className="text-xs text-gray-500 ml-2">
+                (Your departments only)
+              </span>
+            </label>
+            <div className={styles.departmentsList}>
+              {availableDepartments.map((department) => (
+                <div key={department} className={styles.departmentItem}>
+                  <input
+                    type="checkbox"
+                    id={`dept-${department}`}
+                    value={department}
+                    checked={formData.departments.includes(department)}
+                    onChange={() => handleDepartmentToggle(department)}
+                    className={styles.checkbox}
+                    disabled={loading}
+                  />
+                  <label
+                    htmlFor={`dept-${department}`}
+                    className={styles.departmentName}
+                  >
+                    {department}
+                  </label>
+                </div>
+              ))}
+            </div>
+            {availableDepartments.length === 0 && (
+              <p className="text-sm text-gray-500 mt-2">
+                No departments available for you to post announcements to.
+              </p>
+            )}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="expiresAt" className={styles.label}>
+              Expiration Date
+              <span className="text-xs text-gray-500 ml-2">
+                (Optional - Leave empty for no expiration)
+              </span>
+            </label>
+            <input
+              id="expiresAt"
+              type="datetime-local"
+              value={formData.expiresAt}
+              onChange={(e) => handleInputChange("expiresAt", e.target.value)}
+              min={getMinDate()}
+              className={styles.input}
+              disabled={loading}
+            />
+          </div>
+
+          {error && (
+            <div className={styles.error}>
+              <svg
+                className="inline w-4 h-4 mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              {error}
+            </div>
+          )}
+
+          <div className={styles.buttonGroup}>
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              className={styles.cancelButton}
+              disabled={loading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              disabled={loading}
+              className={styles.submitButton}
+              disabled={loading || availableDepartments.length === 0}
             >
-              {loading ? "Posting..." : "Post"}
+              {loading && <span className={styles.loadingSpinner} />}
+              {loading ? "Posting..." : "Post Announcement"}
             </button>
           </div>
         </form>
