@@ -1,0 +1,148 @@
+.overlay {
+  @apply fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  @apply bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md shadow-xl transform transition-all duration-300 ease-out;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  @apply flex items-center justify-between mb-8;
+}
+
+.modalTitle {
+  @apply text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3;
+}
+
+.titleIcon {
+  @apply w-6 h-6 text-blue-600 dark:text-blue-400;
+}
+
+.closeButton {
+  @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 text-2xl font-bold hover:rotate-90 transform;
+}
+
+.statusContainer {
+  @apply mb-8;
+}
+
+.statusIndicator {
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg;
+}
+
+.statusDot {
+  @apply w-3 h-3 rounded-full;
+}
+
+.statusText {
+  @apply font-medium;
+}
+
+.statusPending {
+  @apply bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300;
+}
+
+.statusPending .statusDot {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+.statusActive {
+  @apply bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400;
+}
+
+.statusActive .statusDot {
+  @apply bg-green-500 dark:bg-green-400;
+  animation: pulse 2s infinite;
+}
+
+.statusCompleted {
+  @apply bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400;
+}
+
+.statusCompleted .statusDot {
+  @apply bg-blue-500 dark:bg-blue-400;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+}
+
+.timeContainer {
+  @apply space-y-4 mb-8;
+}
+
+.timeEntry {
+  @apply flex items-center gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-700/30;
+}
+
+.timeIcon {
+  @apply w-5 h-5 text-gray-500 dark:text-gray-400;
+}
+
+.timeInfo {
+  @apply flex flex-col;
+}
+
+.timeLabel {
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.timeValue {
+  @apply text-base font-semibold text-gray-900 dark:text-white break-normal;
+}
+
+.error {
+  @apply text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg mb-4 flex items-center gap-2;
+}
+
+.success {
+  @apply text-green-600 text-sm bg-green-50 dark:bg-green-900/20 p-3 rounded-lg mb-4 flex items-center gap-2;
+}
+
+.buttonContainer {
+  @apply flex justify-center;
+}
+
+.submitButton {
+  @apply px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 min-w-[160px] transition-all duration-200 disabled:cursor-not-allowed relative;
+}
+
+.checkInButton {
+  @apply bg-green-600 text-white hover:bg-green-700 disabled:bg-green-400;
+}
+
+.checkOutButton {
+  @apply bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400;
+}
+
+.buttonIcon {
+  @apply w-5 h-5;
+}
+
+.loadingSpinner {
+  @apply w-5 h-5 border-2 border-white border-t-transparent rounded-full inline-block animate-spin;
+}

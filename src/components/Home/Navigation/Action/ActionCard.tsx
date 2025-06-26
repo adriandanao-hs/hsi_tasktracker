@@ -1,23 +1,26 @@
-import { Link } from "react-router-dom";
-import styles from "./ActionCard.module.css";
 import { ComponentType, SVGProps } from "react";
+import styles from "./ActionCard.module.css";
 
 interface ActionCardProps {
-  to: string;
+  _id?: string;
+  to?: string;
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
   dayTime: string;
   department?: string;
   subject?: string;
   details?: string;
+  onClick?: () => void;
 }
 
 export default function ActionCard({
+  _id,
   to,
   icon: Icon,
   dayTime,
   department,
   subject,
   details,
+  onClick,
 }: ActionCardProps) {
   return (
     <div>
@@ -30,10 +33,17 @@ export default function ActionCard({
         <p className={`${styles.subtitle} my-2`}>{details || "Details"}</p>
       </div>
       <div className="flex justify-end">
-        <Link to={to} className={styles.link}>
-          {Icon && <Icon className={styles.icon} />}
-          <span>View</span>
-        </Link>
+        {onClick ? (
+          <button onClick={onClick} className={styles.link}>
+            {Icon && <Icon className={styles.icon} />}
+            <span>View</span>
+          </button>
+        ) : (
+          <a href={to} className={styles.link}>
+            {Icon && <Icon className={styles.icon} />}
+            <span>View</span>
+          </a>
+        )}
       </div>
     </div>
   );
