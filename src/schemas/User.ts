@@ -4,7 +4,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   photo: string;
-  department: string;
+  departments: string[]; // Array of departments, index 0 is the main department
   passwordHash: string;
   role: "Intern" | "Supervisor" | "Department Head";
 }
@@ -13,7 +13,7 @@ const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   photo: { type: String, default: "" },
-  department: { type: String, required: true },
+  departments: { type: [String], required: true, minlength: 1 }, // At least one department required
   passwordHash: { type: String, required: true },
   role: {
     type: String,

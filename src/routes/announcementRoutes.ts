@@ -15,7 +15,7 @@ router.post("/post", async (req, res) => {
   try {
     const user = jwt.verify(token, JWT_SECRET) as any;
 
-    const { title, message, departments } = req.body;
+    const { title, message, departments, expiresAt } = req.body;
 
     if (!title || !message) {
       res.status(400).json({ message: "Missing fields" });
@@ -27,6 +27,7 @@ router.post("/post", async (req, res) => {
       title,
       message,
       departments,
+      expiresAt: expiresAt ? new Date(expiresAt) : undefined,
     });
 
     await newAnnouncement.save();
@@ -49,8 +50,20 @@ router.get("/", async (req, res) => {
     let query = {};
 
     if (department) {
-      query = { departments: department }; // matches if department exists in the array
+      // Handle multiple department parameters
+      const departments = Array.isArray(department) ? department : [department];
+      query = { departments: { $in: departments } }; // matches if any department exists in the array
     }
+
+    // Add filter to exclude expired announcements
+    const now = new Date();
+    query = {
+      ...query,
+      $or: [
+        { expiresAt: { $exists: false } }, // No expiration date
+        { expiresAt: { $gt: now } }, // Not expired yet
+      ],
+    };
 
     const announcements = await Announcement.find(query)
       .sort({ createdAt: -1 })

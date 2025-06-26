@@ -1,33 +1,71 @@
 import { Document, model, Schema, Types } from "mongoose";
 
 export interface ITask extends Document {
-  assignedTo: Types.ObjectId;
-  role: "Intern" | "Supervisor" | "Department Head";
   taskName: string;
-  to: string;
   dayTime: string;
   department: string;
   subject: string;
   details: string;
+  status: "pending" | "in-progress" | "completed";
+  statusLog: Array<{
+    userId: Types.ObjectId;
+    userName: string;
+    status: "pending" | "in-progress" | "completed";
+    proofOfCompletion?: {
+      type: "file";
+      value: string;
+    };
+    updatedAt: Date;
+  }>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const taskSchema = new Schema<ITask>({
-  assignedTo: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const taskSchema = new Schema<ITask>(
+  {
+    taskName: { type: String, required: true },
+    dayTime: { type: String, required: true },
+    department: { type: String, required: true },
+    subject: { type: String, required: true },
+    details: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "in-progress", "completed"],
+      default: "pending",
+    },
+    statusLog: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        userName: {
+          type: String,
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: ["pending", "in-progress", "completed"],
+          required: true,
+        },
+        proofOfCompletion: {
+          type: {
+            type: String,
+            enum: ["file"],
+          },
+          value: String,
+        },
+        updatedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
-  role: {
-    type: String,
-    enum: ["Intern", "Supervisor", "Department Head"],
-    default: "Intern",
-  },
-  taskName: { type: String, required: true },
-  to: { type: String, required: true },
-  dayTime: { type: String, required: true },
-  department: { type: String, required: true },
-  subject: { type: String, required: true },
-  details: { type: String, required: true },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export const Task = model<ITask>("Task", taskSchema, "Task");

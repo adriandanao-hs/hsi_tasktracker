@@ -3,13 +3,11 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { User } from "../schemas/User";
 import { Router } from "express";
+import { COOKIE_NAME, JWT_SECRET } from "../config";
 
 dotenv.config();
 
 const router = Router();
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
-const COOKIE_NAME = "auth_token";
 
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
@@ -38,7 +36,8 @@ router.post("/login", async (req, res) => {
       email: user!.email,
       name: user!.name,
       role: user!.role,
-      department: user!.department,
+      department: user!.departments[0],
+      departments: user!.departments,
     },
     JWT_SECRET,
     { expiresIn: "1h" }
@@ -53,20 +52,34 @@ router.post("/login", async (req, res) => {
     })
     .json({
       user: {
+        _id: user!._id,
         name: user!.name,
         email: user!.email,
+        photo: user!.photo,
         role: user!.role,
-        department: user!.department,
+        department: user!.departments[0],
+        departments: user!.departments,
       },
     });
   return;
 });
 
 router.post("/register", async (req, res) => {
-  const { email, password, name, role, department } = req.body;
+  const { email, password, name, role, departments } = req.body;
 
-  if (!email || !password || !name || !role || !department) {
-    res.status(400).json({ message: "All fields are required" });
+  if (
+    !email ||
+    !password ||
+    !name ||
+    !role ||
+    !departments ||
+    !Array.isArray(departments) ||
+    departments.length === 0
+  ) {
+    res.status(400).json({
+      message:
+        "All fields are required. Departments must be an array with at least one department.",
+    });
     return;
   }
 
@@ -77,12 +90,13 @@ router.post("/register", async (req, res) => {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
+
   const newUser = new User({
     email,
     passwordHash,
     name,
     role,
-    department,
+    departments, // Array of departments, index 0 is the main department
   });
 
   try {
@@ -92,25 +106,6 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal server error" });
-    return;
-  }
-});
-
-// GET /api/auth/check
-router.get("/me", (req, res) => {
-  const token = req.cookies?.[COOKIE_NAME];
-
-  if (!token) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
-
-  try {
-    const user = jwt.verify(token, JWT_SECRET) as any;
-    res.json({ user: user });
-    return;
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
     return;
   }
 });

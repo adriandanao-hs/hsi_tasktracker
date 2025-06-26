@@ -6,6 +6,7 @@ export interface IAnnouncement extends Document {
   message: string;
   departments: string[];
   createdAt: Date;
+  expiresAt?: Date; // Optional expiration date
 }
 
 const announcementSchema = new Schema<IAnnouncement>({
@@ -14,6 +15,7 @@ const announcementSchema = new Schema<IAnnouncement>({
   message: { type: String, required: true },
   departments: { type: [String], default: [] },
   createdAt: { type: Date, default: Date.now },
+  expiresAt: { type: Date, required: false }, // Optional expiration date
 });
 
 export const Announcement = model<IAnnouncement>(

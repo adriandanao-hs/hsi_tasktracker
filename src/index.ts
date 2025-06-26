@@ -3,51 +3,53 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import path from "path";
 
-import fetchTasks from "./routes/fetchTasks";
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
 import announcementRoutes from "./routes/announcementRoutes";
+import taskRoutes from "./routes/taskRoutes";
+import attendanceRoutes from "./routes/attendanceRoutes";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 10533;
 
-mongoose
-  .connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/hsi_tasktracker"
-  )
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => {
-    console.error("Failed to connect to MongoDB:", err);
-    process.exit(1);
-  });
-
+// Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-  (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    console.error(err.stack);
-    res.status(500).json({ error: "Something went wrong!" });
-  }
-);
+// Connect to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/hsi";
 
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
+
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/fetchTasks", fetchTasks);
+app.use("/api/user", userRoutes);
 app.use("/api/announcement", announcementRoutes);
+app.use("/api/task", taskRoutes);
+app.use("/api/attendance", attendanceRoutes);
+
+// Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+const PORT = process.env.PORT || 10533;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
