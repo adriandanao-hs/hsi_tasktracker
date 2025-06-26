@@ -1,14 +1,18 @@
 import { actions } from "./navigationData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ActionCard from "./Action/ActionCard";
 import styles from "./Navigation.module.css";
 import { useUser } from "../../../context/UserContext";
+import { Announcement } from "../../../types";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 import AnnouncementModal from "./Announcement/AnnouncementModal";
+import TaskModal from "./Task/TaskModal";
+import TaskDetailModal from "./Task/TaskDetailModal";
+import AttendanceModal from "./Attendance/AttendanceModal";
 
-interface Task {
+interface TaskItem {
   _id: string;
   label: string;
   to: string;
@@ -18,66 +22,87 @@ interface Task {
   details?: string;
 }
 
-interface Announcement {
-  _id: string;
-  user: {
-    _id: string;
-    name: string;
-    photo?: string;
-  };
-  title: string;
-  message: string;
-  departments: string[];
-  createdAt: Date;
-}
-
 export default function Navigation() {
   const { user, loading } = useUser();
   const [fetching, setFetching] = useState(true);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [showAttendanceModal, setShowAttendanceModal] = useState(false);
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
-  useEffect(() => {
+  const fetchTasks = useCallback(async () => {
     if (!user) return;
 
-    const fetchTasks = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:10533/api/fetchTasks?role=${user.role}`
-        );
-        const data = await res.json();
-        setTasks(data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        setFetching(false);
-      }
-    };
+    try {
+      const res = await fetch(
+        `http://localhost:10533/api/task?role=${user.role}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setTasks(data);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setFetching(false);
+    }
+  }, [user]);
 
+  const fetchAnnouncements = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      // Fetch announcements for all user departments
+      const userDepartments = user.departments;
+      const departmentParams = userDepartments
+        .map((dept) => `department=${encodeURIComponent(dept)}`)
+        .join("&");
+
+      const res = await fetch(
+        `http://localhost:10533/api/announcement?${departmentParams}`
+      );
+      const data = await res.json();
+      setAnnouncements(data);
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+    }
+  }, [user]);
+
+  useEffect(() => {
     fetchTasks();
-  }, [user]);
+  }, [fetchTasks]);
 
   useEffect(() => {
-    if (!user) return;
-    console.log(user);
-    const fetchAnnouncements = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:10533/api/announcement?department=${user.department}`
-        );
-        console.log(res);
-        const data = await res.json();
-        console.log(data);
-        setAnnouncements(data);
-      } catch (error) {
-        console.error("Error fetching announcements:", error);
-      }
-    };
-
     fetchAnnouncements();
-  }, [user]);
+  }, [fetchAnnouncements]);
+
+  const handleAnnouncementSuccess = useCallback(() => {
+    // Refresh announcements when a new one is posted
+    fetchAnnouncements();
+  }, [fetchAnnouncements]);
+
+  const handleTaskSuccess = useCallback(() => {
+    // Refresh tasks when a new one is created
+    fetchTasks();
+  }, [fetchTasks]);
+
+  const handleTaskView = useCallback((taskId: string) => {
+    setSelectedTaskId(taskId);
+  }, []);
+
+  const handleTaskDetailClose = useCallback(() => {
+    setSelectedTaskId(null);
+  }, []);
+
+  const handleTaskDetailSuccess = useCallback(() => {
+    // Refresh tasks when status is updated
+    fetchTasks();
+  }, [fetchTasks]);
 
   if (loading || fetching) return <div>Loading...</div>;
   if (!user) return null;
@@ -87,7 +112,31 @@ export default function Navigation() {
   return (
     <>
       {showAnnouncementModal && (
-        <AnnouncementModal onClose={() => setShowAnnouncementModal(false)} />
+        <AnnouncementModal
+          onClose={() => setShowAnnouncementModal(false)}
+          onSuccess={handleAnnouncementSuccess}
+          userDepartments={user.departments}
+        />
+      )}
+
+      {showTaskModal && (
+        <TaskModal
+          onClose={() => setShowTaskModal(false)}
+          onSuccess={handleTaskSuccess}
+          userDepartments={user.departments}
+        />
+      )}
+
+      {selectedTaskId && (
+        <TaskDetailModal
+          taskId={selectedTaskId}
+          onClose={handleTaskDetailClose}
+          onSuccess={handleTaskDetailSuccess}
+        />
+      )}
+
+      {showAttendanceModal && (
+        <AttendanceModal onClose={() => setShowAttendanceModal(false)} />
       )}
 
       {user?.role && (
@@ -99,6 +148,9 @@ export default function Navigation() {
                 onClick={() => {
                   if (action.label === "Announcement")
                     setShowAnnouncementModal(true);
+                  if (action.label === "Create Task") setShowTaskModal(true);
+                  if (action.label === "Attendance")
+                    setShowAttendanceModal(true);
                 }}
               >
                 <PlusIcon className={styles.icons} />
@@ -124,7 +176,6 @@ export default function Navigation() {
                   </h3>
                   <p className={styles.announcementBody}>{a.message}</p>
                   <p className={styles.announcementMeta}>
-                    {a.user.name} -{" "}
                     {new Date(a.createdAt).toLocaleDateString("en-PH", {
                       dateStyle: "medium",
                     })}
@@ -149,6 +200,7 @@ export default function Navigation() {
                     timeStyle: "short",
                     timeZone: "Asia/Manila",
                   })}
+                  onClick={() => handleTaskView(task._id)}
                 />
               </div>
             ))}
