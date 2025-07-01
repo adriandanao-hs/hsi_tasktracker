@@ -278,11 +278,10 @@ router.get("/intern/:userId", async (req, res) => {
       return;
     }
 
-    // Get all tasks where the intern is in the statusLog
+    // Get all tasks where the intern is in the statusLog (include deleted tasks)
     const tasks = await Task.find({
       "statusLog.userId": userId,
       department: { $in: user.departments },
-      deleted: { $ne: true },
     }).sort({ dayTime: -1 });
 
     res.json(tasks);
