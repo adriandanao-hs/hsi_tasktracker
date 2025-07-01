@@ -197,7 +197,7 @@ export default function TaskModal({
 
           <div className={styles.formGroup}>
             <label htmlFor="dayTime" className={styles.label}>
-              Date & Time *
+              Due Date & Time *
             </label>
             <input
               id="dayTime"
