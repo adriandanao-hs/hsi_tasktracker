@@ -44,6 +44,7 @@ router.get("/", async (req, res) => {
         department: { $in: user.departments },
         "statusLog.userId": user._id,
         "statusLog.status": { $ne: "completed" },
+        deleted: { $ne: true },
       }).sort({ dayTime: -1 });
       res.json(tasks);
       return;
@@ -51,6 +52,7 @@ router.get("/", async (req, res) => {
       // Department Head: see all tasks for their departments
       const tasks = await Task.find({
         department: { $in: user.departments },
+        deleted: { $ne: true },
       }).sort({ dayTime: -1 });
       res.json(tasks);
       return;
@@ -78,7 +80,7 @@ router.get("/:id", async (req, res) => {
     const user = jwt.verify(token, JWT_SECRET) as any;
     const taskId = req.params.id;
 
-    const task = await Task.findById(taskId);
+    const task = await Task.findOne({ _id: taskId, deleted: { $ne: true } });
 
     if (!task) {
       res.status(404).json({ message: "Task not found" });
@@ -280,11 +282,27 @@ router.get("/intern/:userId", async (req, res) => {
     const tasks = await Task.find({
       "statusLog.userId": userId,
       department: { $in: user.departments },
+      deleted: { $ne: true },
     }).sort({ dayTime: -1 });
 
     res.json(tasks);
   } catch (error) {
     console.error("Error fetching intern tasks:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// POST /api/task/soft-delete-overdue - Soft delete tasks past due date/time
+router.post("/soft-delete-overdue", async (req, res) => {
+  try {
+    const now = new Date();
+    const result = await Task.updateMany(
+      { dayTime: { $lte: now }, deleted: { $ne: true } },
+      { $set: { deleted: true, deletedAt: now } }
+    );
+    res.json({ message: "Soft deleted overdue tasks", result });
+  } catch (error) {
+    console.error("Error soft deleting overdue tasks:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

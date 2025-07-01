@@ -2,7 +2,7 @@ import { Document, model, Schema, Types } from "mongoose";
 
 export interface ITask extends Document {
   taskName: string;
-  dayTime: string;
+  dayTime: Date;
   department: string;
   subject: string;
   details: string;
@@ -19,12 +19,14 @@ export interface ITask extends Document {
   }>;
   createdAt: Date;
   updatedAt: Date;
+  deleted?: boolean;
+  deletedAt?: Date;
 }
 
 const taskSchema = new Schema<ITask>(
   {
     taskName: { type: String, required: true },
-    dayTime: { type: String, required: true },
+    dayTime: { type: Date, required: true },
     department: { type: String, required: true },
     subject: { type: String, required: true },
     details: { type: String, required: true },
@@ -62,6 +64,8 @@ const taskSchema = new Schema<ITask>(
         },
       },
     ],
+    deleted: { type: Boolean, default: false },
+    deletedAt: { type: Date },
   },
   {
     timestamps: true,

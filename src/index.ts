@@ -4,6 +4,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { Task } from "./schemas/Tasks";
+import cron from "node-cron";
 
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
@@ -47,6 +49,22 @@ app.use("/api/attendance", attendanceRoutes);
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+// Schedule a cron job to soft delete overdue tasks every minute
+cron.schedule("* * * * *", async () => {
+  try {
+    const now = new Date();
+    const result = await Task.updateMany(
+      { dayTime: { $lte: now }, deleted: { $ne: true } },
+      { $set: { deleted: true, deletedAt: now } }
+    );
+    if (result.modifiedCount > 0) {
+      console.log(`[CRON] Soft deleted ${result.modifiedCount} overdue tasks at ${now.toISOString()}`);
+    }
+  } catch (error) {
+    console.error("[CRON] Error soft deleting overdue tasks:", error);
+  }
+});
 
 const PORT = process.env.PORT || 10533;
 
