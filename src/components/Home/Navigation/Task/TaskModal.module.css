@@ -1,0 +1,106 @@
+.overlay {
+  @apply fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50;
+}
+
+.modal {
+  @apply bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md shadow-lg transform transition-all duration-200 ease-in-out;
+}
+
+.modalHeader {
+  @apply flex items-center justify-between mb-6;
+}
+
+.modalTitle {
+  @apply text-xl font-bold text-gray-900 dark:text-white;
+}
+
+.closeButton {
+  @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200;
+}
+
+.form {
+  @apply space-y-4;
+}
+
+.formGroup {
+  @apply space-y-2;
+}
+
+.label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+.required {
+  @apply text-red-500 ml-1;
+}
+
+.input {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200;
+}
+
+.textarea {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200 resize-none;
+  min-height: 100px;
+}
+
+.select {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200 bg-white;
+}
+
+.error {
+  @apply text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg flex items-center space-x-2;
+}
+
+.errorIcon {
+  @apply w-5 h-5 flex-shrink-0;
+}
+
+.buttonGroup {
+  @apply flex justify-end gap-3 pt-4;
+}
+
+.cancelButton {
+  @apply px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200 font-medium;
+}
+
+.submitButton {
+  @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium;
+}
+
+.loadingSpinner {
+  @apply inline-block w-4 h-4 mr-2 animate-spin rounded-full border-2 border-solid border-current border-r-transparent;
+}
+
+/* Custom select styling */
+.select option {
+  @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-white;
+}
+
+/* Focus states */
+.input:focus,
+.textarea:focus,
+.select:focus {
+  @apply ring-2 ring-blue-500 border-transparent;
+}
+
+/* Error states */
+.input.error,
+.textarea.error,
+.select.error {
+  @apply border-red-500 focus:ring-red-500;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

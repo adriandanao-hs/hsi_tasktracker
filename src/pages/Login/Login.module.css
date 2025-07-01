@@ -7,21 +7,19 @@
 }
 
 .leftPanel {
-  @apply col-span-1 justify-center flex flex-col items-center ;
+  @apply col-span-1 justify-center flex flex-col items-center;
 }
 
-/* .logoBox {
-  @apply mb-1 ml-20 ;
-} */
+.logoBox {
+  @apply w-96 h-auto flex justify-center;
+}
 
 .brandName {
-  @apply text-5xl font-bold text-[#1a2341] font-serif mb-2 ml-10 drop-shadow-md;
+  @apply text-5xl font-bold text-[#1a2341] font-serif drop-shadow-md;
 }
 
 .tagline {
-  @apply text-base text-gray-500 mt-2 font-medium tracking-wide p-2 ;
-  margin-right: 150px;
-
+  @apply text-2xl italic text-[#1a2341]/80;
 }
 
 .rightPanel {
@@ -29,15 +27,15 @@
 }
 
 .form {
-  @apply w-full max-w-md flex flex-col gap-5;
+  @apply w-full flex flex-col gap-5;
 }
 
 .inputGroup {
-  @apply w-full;
+  @apply flex w-[75%];
 }
 
 .input {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-md text-base bg-gray-50 text-[#1a2341] transition-colors focus:outline-none focus:border-[#1a2341] focus:bg-white;
+  @apply w-[75%] px-4 py-3 border border-gray-300 rounded-md text-base bg-gray-50 text-[#1a2341] transition-colors focus:outline-none focus:border-[#1a2341] focus:bg-white;
 }
 
 .passwordWrapper {
@@ -49,15 +47,11 @@
 }
 
 .forgotRow {
-  @apply flex justify-end -mt-3 mb-1;
-}
-
-.forgotLink {
-  @apply text-sm text-[#1a2341] opacity-80 hover:text-[#0d1333] hover:underline transition-colors;
+  @apply flex justify-end w-[75%] text-sm text-[#1a2341] opacity-80 hover:text-[#0d1333] hover:underline transition-colors;
 }
 
 .actionRow {
-  @apply flex items-center justify-end gap-5 mt-20;
+  @apply flex items-center justify-end gap-5 w-[75%];
 }
 
 .createAccount {
@@ -65,14 +59,9 @@
 }
 
 .submit {
-  @apply bg-[#1a2341] text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
+  @apply bg-blue-900 text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
 }
 
 .error {
   @apply text-red-600 text-base -mt-2 mb-2 text-center;
 }
-
-.logoImage {
-  @apply  h-auto block max-w-md p-1; width:250px ;
-}
-

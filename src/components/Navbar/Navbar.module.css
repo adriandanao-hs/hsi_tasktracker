@@ -1,39 +1,37 @@
 .navbar {
-  @apply fixed top-0 left-0 h-full  flex flex-col justify-between items-center pt-9 bg-navyblue text-white z-10;
-  width:80px;
+  @apply fixed top-0 left-0 h-full w-16 flex flex-col justify-between items-center bg-navyblue text-white z-10;
 }
 
-.topSection {
-  @apply flex flex-col items-center space-y-10
+.logo {
+  @apply flex flex-col items-center;
 }
 
 .logoImage {
-  @apply  h-12 block max-w-md p-1 ;
+  @apply h-14 block max-w-md p-1 mt-2;
 }
 
 .navLinks {
-  @apply flex flex-col space-y-5  ;
+  @apply flex flex-col space-y-2 mt-10;
 }
 
 .bottomLinks {
-  @apply flex flex-col space-y-5 mb-5
+  @apply flex flex-col items-center space-y-1 pb-2;
 }
 
 .navLink {
-  @apply p-1  transition-colors duration-200 hover:bg-white hover:text-navyblue;
+  @apply p-2 transition-colors duration-200 hover:bg-white hover:text-navyblue;
 }
 
 .navItemStyle {
-  @apply flex flex-col items-center text-xs;
+  @apply flex flex-col items-center text-lg;
 }
 
-
 .icons {
-  @apply w-7 h-7
+  @apply w-7 h-7;
 }
 
 .iconText {
-  @apply  text-center; font-size: 12px;
+  @apply text-xs text-center;
 }
 
 .logoLink {
@@ -41,11 +39,69 @@
 }
 
 .logoBox {
-  @apply w-9 h-9 flex items-center justify-center;
+  @apply w-9 h-auto flex items-center justify-center;
 }
 
-.logoText {
-  @apply text-white font-bold text-base mt-0 lowercase;
-  font-family: "Segoe UI", "Arial", sans-serif;
-  letter-spacing: 1px;
+.profileContainer {
+  @apply flex items-center gap-2 p-1 m-1 outline-none focus:outline-none hover:bg-white hover:rounded-lg;
+}
+
+:global(.dark) .navbar {
+  @apply bg-gray-300 text-navyblue;
+}
+
+:global(.dark) .logoImage {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(97%) saturate(749%) hue-rotate(181deg) brightness(95%) contrast(98%);
+}
+
+:global(.dark) .navLink {
+  @apply hover:bg-navyblue hover:text-white;
+}
+
+.profileImage {
+  @apply w-10 h-auto rounded-full border-none transition-all duration-150;
+}
+
+.profileItems {
+  @apply absolute left-full top-0 ml-2 w-40 rounded bg-gray-400 border border-black shadow-lg;
+}
+
+:global(.dark) .profileItems {
+  @apply bg-gray-800;
+}
+
+.menuItems {
+  @apply block w-full px-4 py-2 text-lg text-left text-black hover:bg-gray-500;
+}
+
+:global(.dark) .menuItems {
+  @apply text-white hover:bg-gray-900;
+}
+
+.sidebar {
+  @apply fixed top-0 left-0 h-full w-64 bg-white border-l border-gray-200 transform transition-transform duration-300 z-50;
+}
+
+:global(.dark) .sidebar {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.sidebarOpen {
+  @apply translate-x-0;
+}
+
+.sidebarClosed {
+  @apply -translate-x-full;
+}
+
+.sidebarOverlay {
+  @apply fixed inset-0 bg-black bg-opacity-30 z-40;
+}
+
+.scrollToTopBtn {
+  @apply fixed right-6 bottom-6 z-50 bg-white dark:bg-navyblue rounded-full shadow-lg w-12 h-12 flex items-center justify-center border-none cursor-pointer transition-colors duration-200;
+}
+
+.scrollToTopIcon {
+  @apply w-7 h-7 text-navyblue dark:text-white;
 }
