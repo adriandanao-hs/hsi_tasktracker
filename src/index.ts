@@ -17,17 +17,10 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: process.env.FRONTEND_URL?.replace(/\/$/, '') || "http://localhost:3000",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  exposedHeaders: ["Set-Cookie"]
-};
-
-// Apply CORS middleware
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: "https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app", // allow only your frontend
+  credentials: true // if using cookies or HTTP auth
+}));
 
 app.use(express.json());
 app.use(cookieParser());
