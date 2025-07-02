@@ -9,7 +9,12 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 // Set up multer for file uploads
-const uploadDir = '/tmp';
+const uploadDir = process.env.NODE_ENV === 'production' ? '/tmp' : path.join(__dirname, '../../uploads');
+
+// Ensure upload directory exists
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,7 +26,12 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ 
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  }
+});
 
 // Get user profile
 router.get("/me", async (req, res) => {
@@ -82,8 +92,20 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
       return;
     }
 
-    // Update user photo
-    user.photo = `/tmp/${req.file.filename}`;
+    // Delete old photo if it exists
+    if (user.photo && user.photo !== '/uploads/default-avatar.jpg') {
+      const oldPhotoPath = path.join(uploadDir, path.basename(user.photo));
+      if (fs.existsSync(oldPhotoPath)) {
+        fs.unlinkSync(oldPhotoPath);
+      }
+    }
+
+    // Update user photo path based on environment
+    const photoPath = process.env.NODE_ENV === 'production' 
+      ? `/uploads/${req.file.filename}`
+      : `/uploads/${req.file.filename}`;
+    
+    user.photo = photoPath;
     await user.save();
 
     res.json({
