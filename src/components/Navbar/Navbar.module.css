@@ -43,11 +43,11 @@
 }
 
 .profileContainer {
-  @apply flex items-center gap-2 p-1 m-1 outline-none focus:outline-none hover:bg-white hover:rounded-lg;
+  @apply flex items-center  gap-2 p-1  w-12 h-16 hover:bg-white;
 }
 
 :global(.dark) .navbar {
-  @apply bg-gray-300 text-navyblue;
+  @apply bg-white text-navyblue;
 }
 
 :global(.dark) .logoImage {
@@ -58,8 +58,12 @@
   @apply hover:bg-navyblue hover:text-white;
 }
 
+:global(.dark) .profileContainer {
+  @apply hover:bg-navyblue hover:text-white;
+}
+
 .profileImage {
-  @apply w-10 h-auto rounded-full border-none transition-all duration-150;
+  @apply w-16 h-10 rounded-full border-none transition-all duration-150;
 }
 
 .profileItems {

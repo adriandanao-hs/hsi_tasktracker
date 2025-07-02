@@ -1,5 +1,5 @@
 .container {
-  @apply min-h-screen bg-gray-300 transition-colors;
+  @apply min-h-screen bg-white transition-colors;
 }
 /* When <html class="dark"> is set… */
 :global(.dark) .container {
@@ -7,11 +7,11 @@
 }
 
 .content {
-  @apply grid grid-cols-1 p-5 gap-2 w-full;
+  @apply grid grid-cols-1 p-10 gap-3 w-full;
 }
 
 .heading {
-  @apply block w-full text-3xl font-bold text-navyblue border-b-2 border-navyblue mt-10;
+  @apply block w-full text-3xl font-bold text-navyblue border-b-2 border-navyblue mt-5;
 }
 
 :global(.dark) .heading {
