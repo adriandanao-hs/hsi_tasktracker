@@ -1,6 +1,4 @@
 import {
-  ApiResponse,
-  AuthResponse,
   LoginCredentials,
   RegisterData,
   User,

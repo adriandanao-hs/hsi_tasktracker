@@ -44,32 +44,31 @@ export default function TaskDetailModal({
   }>(null);
 
   useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const response = await fetch(`${getBaseUrl()}/task/${taskId}`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Access denied");
+          }
+          throw new Error("Failed to fetch task");
+        }
+
+        const taskData = await response.json();
+        setTask(taskData);
+        setStatusUpdate({ status: taskData.status });
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch task");
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchTask();
   }, [taskId]);
-
-  const fetchTask = async () => {
-    try {
-      const response = await fetch(`${getBaseUrl()}/task/${taskId}`, {
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Access denied");
-        }
-        throw new Error("Failed to fetch task");
-      }
-
-      const taskData = await response.json();
-      setTask(taskData);
-      setStatusUpdate({ status: taskData.status });
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch task");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleStatusChange = (newStatus: StatusUpdateData["status"]) => {
     setStatusUpdate({ status: newStatus });
@@ -127,9 +126,6 @@ export default function TaskDetailModal({
         }
         throw new Error(errorData.message || "Failed to update task status");
       }
-
-      // Refresh task data
-      await fetchTask();
 
       if (onSuccess) {
         onSuccess();

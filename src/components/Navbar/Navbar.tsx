@@ -5,7 +5,7 @@ import { useUser } from "../../context/UserContext";
 import { useTheme } from "../../hooks/useTheme";
 import { actions } from "./navbarData";
 import styles from "./Navbar.module.css";
-import { getBaseUrl, getAssetUrl } from "../../services/api";
+import { getAssetUrl } from "../../services/api";
 
 import ChronoLogoWhite from "../../images/chrono_logo_white.png";
 import defaultAvatar from "../../images/default-avatart.jpg";
