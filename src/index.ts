@@ -23,24 +23,11 @@ const corsOptions = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  exposedHeaders: ["set-cookie"]
+  exposedHeaders: ["Set-Cookie"]
 };
-
-// Handle CORS preflight requests
-app.options('*', cors(corsOptions));
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
-
-// Add headers middleware
-app.use((req, res, next) => {
-  const origin = process.env.FRONTEND_URL?.replace(/\/$/, '') || "http://localhost:3000";
-  res.header('Access-Control-Allow-Origin', origin);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie');
-  next();
-});
 
 app.use(express.json());
 app.use(cookieParser());
