@@ -17,10 +17,24 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = ['https://hsi-tasktracker.vercel.app'];
+
 app.use(cors({
-  origin: "https://hsi-tasktracker.vercel.app",
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie'],
+  maxAge: 86400
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
