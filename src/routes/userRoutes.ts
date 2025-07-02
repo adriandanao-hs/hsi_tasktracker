@@ -82,18 +82,8 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
       return;
     }
 
-    // Delete old photo if it exists
-    if (user.photo) {
-      // Remove the /uploads/ prefix from the stored path
-      const filename = user.photo.replace(/^\/uploads\//, "");
-      const oldPhotoPath = path.join(uploadDir, filename);
-      if (fs.existsSync(oldPhotoPath)) {
-        fs.unlinkSync(oldPhotoPath);
-      }
-    }
-
     // Update user photo
-    user.photo = `/uploads/${req.file.filename}`;
+    user.photo = `/tmp/${req.file.filename}`;
     await user.save();
 
     res.json({
