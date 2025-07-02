@@ -32,7 +32,4 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-// Add index for better query performance
-userSchema.index({ email: 1 });
-
 export const User = model<IUser>("User", userSchema);
