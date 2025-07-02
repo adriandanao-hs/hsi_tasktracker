@@ -190,7 +190,7 @@ const Register: React.FC = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:10533/api/auth/register",
+          "https://hsitasktrackerbackend.vercel.app/api/auth/register",
           {
             method: "POST",
             headers: {
