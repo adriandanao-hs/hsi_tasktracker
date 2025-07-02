@@ -11,15 +11,28 @@ export interface IUser extends Document {
 
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  photo: { type: String, default: "" },
-  departments: { type: [String], required: true, minlength: 1 }, // At least one department required
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  photo: { type: String, default: "/uploads/default-avatar.jpg" },
+  departments: { 
+    type: [String], 
+    required: true, 
+    validate: {
+      validator: function(v: string[]) {
+        return Array.isArray(v) && v.length > 0;
+      },
+      message: "At least one department is required"
+    }
+  },
   passwordHash: { type: String, required: true },
   role: {
     type: String,
     enum: ["Intern", "Department Head", "Supervisor"],
     default: "Intern",
+    required: true
   },
 });
+
+// Add index for better query performance
+userSchema.index({ email: 1 });
 
 export const User = model<IUser>("User", userSchema);

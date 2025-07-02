@@ -7,8 +7,8 @@ export const COOKIE_NAME = "auth_token";
 // Cookie configuration
 export const getCookieConfig = (): CookieOptions => ({
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" as const : "strict" as const,
+  secure: true,
+  sameSite: "none",
   maxAge: 3600000, // 1 hour
   path: "/"
 });

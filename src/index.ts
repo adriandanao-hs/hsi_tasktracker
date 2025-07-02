@@ -17,6 +17,12 @@ dotenv.config();
 
 const app = express();
 
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
 const allowedOrigins = ['https://hsi-tasktracker.vercel.app'];
 
 app.use(cors({
@@ -66,6 +72,22 @@ if (process.env.NODE_ENV === "production") {
   // In development, use local uploads directory
   app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 }
+
+// Error handling middleware
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Error:', err);
+  console.error('Stack:', err.stack);
+  
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ message: err.message });
+    return;
+  }
+  
+  res.status(500).json({ 
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
 
 // Schedule a cron job to soft delete overdue tasks every minute
 if (process.env.NODE_ENV !== "development") {
