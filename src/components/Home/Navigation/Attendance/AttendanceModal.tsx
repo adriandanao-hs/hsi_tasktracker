@@ -49,12 +49,17 @@ export default function AttendanceModal({
         const records: AttendanceRecord[] = await res.json();
         // Find today's record
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Set to start of day for comparison
+        const todayYear = today.getFullYear();
+        const todayMonth = today.getMonth();
+        const todayDate = today.getDate();
 
         const todayRecord = records.find((r) => {
-          const recordDate = new Date(r.date);
-          recordDate.setHours(0, 0, 0, 0); // Set to start of day for comparison
-          return recordDate.getTime() === today.getTime();
+          const d = new Date(r.date);
+          return (
+            d.getFullYear() === todayYear &&
+            d.getMonth() === todayMonth &&
+            d.getDate() === todayDate
+          );
         });
 
         setAttendance(todayRecord || null);
