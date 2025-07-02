@@ -17,10 +17,17 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: "https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app", // allow only your frontend
-  credentials: true // if using cookies or HTTP auth
-}));
+const corsOptions = {
+  origin: "https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight requests for all routes
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
