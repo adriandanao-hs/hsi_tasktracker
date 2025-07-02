@@ -8,7 +8,7 @@ export const COOKIE_NAME = "auth_token";
 export const getCookieConfig = (): CookieOptions => ({
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" as const : "strict" as const,
+  sameSite: process.env.NODE_ENV === "production" ? "none" as const : "lax" as const,
   maxAge: 3600000, // 1 hour
-  domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined,
+  path: "/"
 });
