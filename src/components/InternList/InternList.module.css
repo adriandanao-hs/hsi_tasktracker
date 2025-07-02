@@ -1,0 +1,91 @@
+.internGrid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4;
+}
+
+.internCard {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:transform hover:scale-105;
+}
+
+.internImage {
+  @apply w-full h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden;
+}
+
+.avatar {
+  @apply h-10 w-10 rounded-full object-cover;
+}
+
+.internInfo {
+  @apply p-4;
+}
+
+.internName {
+  @apply text-xl font-semibold text-gray-900 dark:text-white mb-2;
+}
+
+.internEmail {
+  @apply text-sm text-gray-600 dark:text-gray-300 mb-1;
+}
+
+.internDepartment {
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.tableContainer {
+  @apply w-full overflow-x-auto bg-white dark:bg-gray-200 rounded-lg shadow-md;
+}
+
+.table {
+  @apply min-w-full divide-y divide-gray-200 dark:divide-gray-100;
+}
+
+.th {
+  @apply px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-900;
+}
+
+.tr {
+  @apply hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors duration-150;
+}
+
+.tr:nth-child(even) {
+  @apply bg-gray-50/50 dark:bg-gray-200/25 dark:hover:bg-gray-900/50;
+}
+
+.td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-900;
+}
+
+.td:nth-child(4) {
+  @apply whitespace-normal;
+}
+
+.department {
+  @apply inline-flex items-center text-sm text-gray-700 dark:text-gray-900;
+}
+
+.department:not(:last-child) {
+  @apply mr-1;
+}
+
+.viewButton {
+  @apply px-3 py-1 bg-blue-900 text-white text-sm rounded hover:bg-blue-700 transition-colors duration-150;
+}
+
+.loadingContainer {
+  @apply flex flex-col items-center justify-center min-h-[60vh] text-gray-600 dark:text-gray-300;
+}
+
+.loadingSpinner {
+  @apply w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4;
+}
+
+.errorContainer {
+  @apply flex items-center justify-center min-h-[60vh];
+}
+
+.errorMessage {
+  @apply text-red-500 text-lg;
+}
+
+.noInterns {
+  @apply text-center text-gray-600 dark:text-gray-300 py-8 text-lg;
+}

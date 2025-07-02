@@ -1,0 +1,219 @@
+.overlay {
+  @apply fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50;
+}
+
+.modal {
+  @apply bg-gray-800 p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg transform transition-all duration-200 ease-in-out;
+}
+
+.modalHeader {
+  @apply flex items-center justify-between mb-6;
+}
+
+.modalTitle {
+  @apply text-xl font-bold text-gray-900 dark:text-white;
+}
+
+.closeButton {
+  @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200;
+}
+
+.loading {
+  @apply text-center py-8 text-gray-600 dark:text-gray-400;
+}
+
+.error {
+  @apply text-center py-8 text-red-600 dark:text-red-400;
+}
+
+.taskInfo {
+  @apply mb-6 bg-gray-800 text-white;
+}
+
+.taskHeader {
+  @apply flex items-center justify-between mb-4;
+}
+
+.taskName {
+  @apply text-lg font-semibold text-gray-900 dark:text-white;
+}
+
+.statusBadge {
+  @apply px-3 py-1 rounded-full text-white text-sm font-medium;
+}
+
+.taskDetails {
+  @apply space-y-3;
+}
+
+.detailRow {
+  @apply flex flex-col sm:flex-row sm:items-center gap-2;
+}
+
+.label {
+  @apply text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[100px] sm:min-w-[120px];
+}
+
+.value {
+  @apply text-sm text-gray-900 dark:text-white flex-1;
+}
+
+.statusLogSection {
+  @apply mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg;
+}
+
+.statusLogTitle {
+  @apply text-sm font-semibold text-gray-900 dark:text-white mb-3;
+}
+
+.statusLogList {
+  @apply space-y-3;
+}
+
+.statusLogItem {
+  @apply p-3 bg-white dark:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-500;
+}
+
+.statusLogHeader {
+  @apply flex items-center justify-between mb-2;
+}
+
+.statusLogUser {
+  @apply text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.statusLogStatus {
+  @apply px-2 py-1 rounded-full text-white text-xs font-medium;
+}
+
+.statusLogTime {
+  @apply text-xs text-gray-500 dark:text-gray-400 mb-2;
+}
+
+.statusLogProof {
+  @apply mt-2 pt-2 border-t border-gray-200 dark:border-gray-500;
+}
+
+.proofLabel {
+  @apply text-xs font-medium text-gray-700 dark:text-gray-300 mr-2;
+}
+
+.proofImage {
+  @apply max-w-full h-auto rounded-lg border border-gray-300 dark:border-gray-600 mt-1;
+  max-height: 200px;
+}
+
+.proofLink {
+  @apply text-blue-600 dark:text-blue-400 hover:underline break-all text-sm;
+}
+
+.proofSection {
+  @apply mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg;
+}
+
+.proofTitle {
+  @apply text-sm font-semibold text-gray-900 dark:text-white mb-3;
+}
+
+.proofContent {
+  @apply space-y-2;
+}
+
+.completionInfo {
+  @apply mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg;
+}
+
+.completionDate {
+  @apply text-sm text-green-700 dark:text-green-400 font-medium;
+}
+
+.statusForm {
+  @apply space-y-4;
+}
+
+.formGroup {
+  @apply space-y-2;
+}
+
+.label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+.statusOptions {
+  @apply grid grid-cols-2 sm:grid-cols-3 gap-2;
+}
+
+.statusOption {
+  @apply px-3 py-2 rounded-lg bg-white text-black text-sm font-medium transition-colors duration-200 hover:opacity-80;
+}
+
+.statusOption.selected {
+  @apply ring-2 ring-offset-2 ring-blue-500;
+}
+
+.proofTypeSelector {
+  @apply flex gap-4 mb-2;
+}
+
+.radioLabel {
+  @apply flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer;
+}
+
+.radio {
+  @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+}
+
+.input {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200;
+}
+
+.error {
+  @apply text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg flex items-center space-x-2;
+}
+
+.buttonGroup {
+  @apply flex justify-end gap-3 pt-4;
+}
+
+.cancelButton {
+  @apply px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200 font-medium;
+}
+
+.submitButton {
+  @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium;
+}
+
+.loadingSpinner {
+  @apply inline-block w-4 h-4 mr-2 animate-spin rounded-full border-2 border-solid border-current border-r-transparent;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .modal {
+    @apply mx-4 max-w-none;
+  }
+
+  .statusOptions {
+    @apply grid-cols-2;
+  }
+
+  .detailRow {
+    @apply flex-col items-start;
+  }
+
+  .label {
+    @apply min-w-0;
+  }
+}
+
+.proofModalOverlay {
+  @apply fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50;
+}
+
+.proofModalContent {
+  @apply bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg relative max-w-xl w-full flex flex-col items-center;
+}
+
+.proofModalImage {
+  @apply w-auto max-h-[30vh] rounded-lg border border-gray-300 dark:border-gray-600;
+}

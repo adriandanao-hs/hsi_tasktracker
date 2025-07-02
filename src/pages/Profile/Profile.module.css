@@ -1,0 +1,71 @@
+.container {
+  @apply min-h-screen bg-white transition-colors;
+}
+
+:global(.dark) .container {
+  @apply bg-navyblue-light;
+}
+
+.content {
+  @apply grid grid-cols-1 p-10 gap-5 w-full;
+}
+
+.heading {
+  @apply block w-full text-3xl font-bold text-navyblue border-b-2 border-navyblue mt-5;
+}
+
+:global(.dark) .heading {
+  @apply text-white border-white;
+}
+
+.profileCard {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6;
+}
+
+.profileSection {
+  @apply space-y-4;
+}
+
+.sectionTitle {
+  @apply text-lg font-semibold text-gray-700 dark:text-gray-300;
+}
+
+.sectionContent {
+  @apply text-gray-600 dark:text-gray-200;
+}
+
+.photoContainer {
+  @apply flex flex-col items-center mb-6;
+}
+
+.photoWrapper {
+  @apply relative;
+}
+
+.photo {
+  @apply w-32 h-32 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700;
+}
+
+.editButton {
+  @apply absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 cursor-pointer transition-colors;
+}
+
+.uploadStatus {
+  @apply mt-2;
+}
+
+.uploadingText {
+  @apply text-blue-500;
+}
+
+.errorText {
+  @apply text-red-500;
+}
+
+.departmentList {
+  @apply space-y-1;
+}
+
+.departmentItem {
+  @apply flex items-center space-x-2;
+}

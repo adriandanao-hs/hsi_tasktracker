@@ -7,11 +7,11 @@
 }
 
 .leftPanel {
-  @apply col-span-1 justify-center flex flex-col items-center ;
+  @apply col-span-1 justify-center flex flex-col items-center;
 }
 
 .logoBox {
-  @apply w-full flex justify-center;
+  @apply w-96 h-auto flex justify-center;
 }
 
 .brandName {
@@ -35,7 +35,7 @@
 }
 
 .input {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-md text-base bg-gray-50 text-[#1a2341] transition-colors focus:outline-none focus:border-[#1a2341] focus:bg-white;
+  @apply w-[75%] px-4 py-3 border border-gray-300 rounded-md text-base bg-gray-50 text-[#1a2341] transition-colors focus:outline-none focus:border-[#1a2341] focus:bg-white;
 }
 
 .passwordWrapper {
@@ -59,7 +59,7 @@
 }
 
 .submit {
-  @apply bg-[#1a2341] text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
+  @apply bg-blue-900 text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
 }
 
 .error {

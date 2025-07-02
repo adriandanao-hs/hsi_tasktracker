@@ -1,84 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { SunIcon, MoonIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
+import { useUser } from "../../context/UserContext";
+import { useTheme } from "../../hooks/useTheme";
 import { actions } from "./navbarData";
 import styles from "./Navbar.module.css";
-import { useState, useEffect } from "react";
-import { useUser } from "../../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
-import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
-import ChronoLogo from "../../images/chrono_logo.png";
-import default_avatart from "../../images/default-avatart.jpg";
 import ChronoLogoWhite from "../../images/chrono_logo_white.png";
+import defaultAvatar from "../../images/default-avatart.jpg";
 
 export default function Navbar() {
-  const { user, setUser } = useUser();
+  const { user, logout } = useUser();
+  const { toggleTheme, isDark } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    () => localStorage.getItem("theme") === "dark"
-  );
   const navigate = useNavigate();
+  const [showScroll, setShowScroll] = useState(false);
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:10533/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        console.error("Logout failed:", errData.message || "Unknown error");
-        return;
-      }
-
-      setUser(null);
+      await logout();
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
+      navigate("/login");
     }
   };
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+  const userActions = actions[user?.role as keyof typeof actions] || [];
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  // Show button when scrolled down
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScroll(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.topSection}>
-        <div className={styles.logo}>
-          <Link to="/" className={styles.logoLink}>
-            <div className={styles.logoBox}>
-              <img
-                src={ChronoLogoWhite}
-                alt="Task Tracker"
-                className={styles.logoImage}
-              />
-            </div>
-          </Link>
-        </div>
+    <>
+      <nav className={styles.navbar}>
+        <div className={styles.topSection}>
+          <div className={styles.logo}>
+            <Link to="/" className={styles.logoLink}>
+              <div className={styles.logoBox}>
+                <img
+                  src={ChronoLogoWhite}
+                  alt="Task Tracker"
+                  className={styles.logoImage}
+                />
+              </div>
+            </Link>
+          </div>
 
-        {/* Top  */}
-
-        <ul className={styles.navLinks}>
-          {(actions[user?.role as keyof typeof actions] || []).map((item) => {
-            return (
+          <ul className={styles.navLinks}>
+            {userActions.map((item) => (
               <li key={item.label} className={styles.navItem}>
                 <Link
                   to={item.to}
@@ -95,65 +75,85 @@ export default function Navbar() {
                   </span>
                 </Link>
               </li>
-            );
-          })}
-        </ul>
-      </div>
+            ))}
+          </ul>
+        </div>
 
-      {/* Bottom Links */}
-      <ul className={styles.bottomLinks}>
-        <li>
-          <button
-            onClick={() => setDarkMode((prev) => !prev)}
-            className={`${styles.navLink} ${styles.navItemStyle}`}
-            aria-label="Toggle theme"
-          >
-            {darkMode ? (
-              <MoonIcon className={styles.icons} />
-            ) : (
-              <SunIcon className={styles.icons} />
-            )}
-            <span className={styles.iconText}>Theme</span>
-          </button>
-        </li>
-        <li>
-          <button
-            className={styles.profileContainer}
-            onClick={() => setSidebarOpen((prev) => !prev)}
-          >
-            <img
-              src={user!.photo || default_avatart}
-              alt="Profile"
-              className={styles.profileImage}
-            />
-          </button>
-
-          {sidebarOpen && (
-            <div
-              className={styles.sidebarOverlay}
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-          <div
-            className={`${styles.sidebar} ${
-              sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed
-            }`}
-          >
+        {/* Bottom Links */}
+        <ul className={styles.bottomLinks}>
+          <li>
             <button
-              onClick={() => setSidebarOpen(false)}
-              className="absolute top-2 right-2 text-lg font-bold"
+              onClick={toggleTheme}
+              className={`${styles.navLink} ${styles.navItemStyle}`}
+              aria-label="Toggle theme"
             >
-              &times;
+              {isDark ? (
+                <MoonIcon className={styles.icons} />
+              ) : (
+                <SunIcon className={styles.icons} />
+              )}
+              <span className={styles.iconText}>Theme</span>
             </button>
-            <div className="flex flex-col mt-10">
-              <button className={styles.menuItems}>Profile</button>
-              <button onClick={handleLogout} className={styles.menuItems}>
-                Logout
+          </li>
+          <li>
+            <button
+              className={styles.profileContainer}
+              onClick={() => setSidebarOpen((prev) => !prev)}
+              aria-label="Open profile menu"
+            >
+              <img
+                src={`http://localhost:10533${user?.photo}` || defaultAvatar}
+                alt="Profile"
+                className={styles.profileImage}
+              />
+            </button>
+
+            {sidebarOpen && (
+              <div
+                className={styles.sidebarOverlay}
+                onClick={() => setSidebarOpen(false)}
+              />
+            )}
+            <div
+              className={`${styles.sidebar} ${
+                sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed
+              }`}
+            >
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="absolute top-2 right-2 text-lg font-bold hover:text-gray-600 dark:hover:text-gray-300"
+                aria-label="Close menu"
+              >
+                &times;
               </button>
+              <div className="flex flex-col mt-10 space-y-2">
+                <Link
+                  to="/profile"
+                  className={styles.menuItems}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className={`${styles.menuItems} text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300`}
+                >
+                  Logout
+                </button>
+              </div>
             </div>
-          </div>
-        </li>
-      </ul>
-    </nav>
+          </li>
+        </ul>
+      </nav>
+      {showScroll && (
+        <button
+          onClick={scrollToTop}
+          className={styles.scrollToTopBtn}
+          aria-label="Scroll to top"
+        >
+          <ArrowUpIcon className={styles.scrollToTopIcon} />
+        </button>
+      )}
+    </>
   );
 }

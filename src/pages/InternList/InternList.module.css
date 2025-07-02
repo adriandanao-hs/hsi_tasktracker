@@ -1,13 +1,14 @@
 .container {
   @apply min-h-screen bg-white transition-colors;
 }
+
 /* When <html class="dark"> is set… */
 :global(.dark) .container {
   @apply bg-navyblue-light;
 }
 
 .content {
-  @apply grid grid-cols-1 p-10 gap-3 w-full;
+  @apply grid grid-cols-1 p-10 gap-5 w-full;
 }
 
 .heading {
