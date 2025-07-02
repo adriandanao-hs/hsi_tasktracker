@@ -14,6 +14,17 @@ export class ApiError extends Error {
   }
 }
 
+const defaultHeaders = {
+  "Content-Type": "application/json",
+  "Accept": "application/json",
+};
+
+const defaultOptions: RequestInit = {
+  credentials: "include",
+  headers: defaultHeaders,
+  mode: "cors",
+};
+
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const error = await response
@@ -27,11 +38,8 @@ async function handleResponse<T>(response: Response): Promise<T> {
 export const apiService = {
   login: async (credentials: LoginCredentials) => {
     const response = await fetch(`${getBaseUrl()}/auth/login`, {
+      ...defaultOptions,
       method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(credentials),
     });
     return handleResponse<{ user: User }>(response);
@@ -39,11 +47,8 @@ export const apiService = {
 
   register: async (userData: RegisterData) => {
     const response = await fetch(`${getBaseUrl()}/auth/register`, {
+      ...defaultOptions,
       method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(userData),
     });
     return handleResponse<{ user: User }>(response);
@@ -51,15 +56,16 @@ export const apiService = {
 
   logout: async () => {
     const response = await fetch(`${getBaseUrl()}/auth/logout`, {
+      ...defaultOptions,
       method: "POST",
-      credentials: "include",
     });
     return handleResponse<{ message: string }>(response);
   },
 
   getCurrentUser: async () => {
     const response = await fetch(`${getBaseUrl()}/user/me`, {
-      credentials: "include",
+      ...defaultOptions,
+      method: "GET",
     });
     return handleResponse<User>(response);
   },
@@ -69,8 +75,9 @@ export const apiService = {
     formData.append("photo", photo);
 
     const response = await fetch(`${getBaseUrl()}/user/update-photo`, {
-      method: "POST",
       credentials: "include",
+      method: "POST",
+      mode: "cors",
       body: formData,
     });
     return handleResponse<{ message: string; photo: string }>(response);
@@ -78,7 +85,8 @@ export const apiService = {
 
   getInterns: async (userId: string) => {
     const response = await fetch(`${getBaseUrl()}/user/interns/${userId}`, {
-      credentials: "include",
+      ...defaultOptions,
+      method: "GET",
     });
     return handleResponse<User[]>(response);
   },
