@@ -4,10 +4,20 @@ import jwt from "jsonwebtoken";
 import { User } from "../schemas/User";
 import { Router } from "express";
 import { COOKIE_NAME, JWT_SECRET } from "../config";
+import { CookieOptions } from "express";
 
 dotenv.config();
 
 const router = Router();
+
+// Cookie options based on environment
+const getCookieOptions = (): CookieOptions => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" as const : "strict" as const,
+  maxAge: 3600000, // 1 hour
+  domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined,
+});
 
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
@@ -44,12 +54,7 @@ router.post("/login", async (req, res) => {
   );
 
   res
-    .cookie(COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 3600000, // 1 hour
-    })
+    .cookie(COOKIE_NAME, token, getCookieOptions())
     .json({
       user: {
         _id: user!._id,
@@ -112,11 +117,7 @@ router.post("/register", async (req, res) => {
 
 // POST /api/auth/logout
 router.post("/logout", (_req, res) => {
-  res.clearCookie(COOKIE_NAME, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
+  res.clearCookie(COOKIE_NAME, getCookieOptions());
   res.json({ message: "Logged out" });
   return;
 });
