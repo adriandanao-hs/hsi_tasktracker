@@ -1,0 +1,7 @@
+.link {
+    @apply p-4 rounded-xl shadow bg-gray-100 hover:bg-blue-100 transition flex items-center space-x-4
+}
+
+:global(.dark) .link {
+  @apply bg-gray-900 hover:bg-blue-900;
+}

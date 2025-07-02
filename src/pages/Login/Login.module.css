@@ -59,7 +59,7 @@
 }
 
 .submit {
-  @apply bg-[#1a2341] text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
+  @apply bg-blue-900 text-white text-lg font-medium py-2 px-7 rounded-full cursor-pointer shadow-md transition-colors hover:bg-[#22306a] border-0;
 }
 
 .error {
