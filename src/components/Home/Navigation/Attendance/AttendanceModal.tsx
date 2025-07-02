@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./AttendanceModal.module.css";
 import { useUser } from "../../../../context/UserContext";
+import { getBaseUrl } from "../../../../services/api";
 
 interface AttendanceModalProps {
   onClose: () => void;
@@ -32,7 +33,7 @@ export default function AttendanceModal({
       setError("");
       try {
         const res = await fetch(
-          `http://localhost:10533/api/attendance/history/${user?._id}`,
+          `${getBaseUrl()}/attendance/history/${user?._id}`,
           {
             credentials: "include",
             headers: {
@@ -76,7 +77,7 @@ export default function AttendanceModal({
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:10533/api/attendance/checkin", {
+      const res = await fetch(`${getBaseUrl()}/attendance/checkin`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -103,17 +104,14 @@ export default function AttendanceModal({
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        "http://localhost:10533/api/attendance/checkout",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user?._id }),
-        }
-      );
+      const res = await fetch(`${getBaseUrl()}/attendance/checkout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?._id }),
+      });
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.message || "Check-out failed");

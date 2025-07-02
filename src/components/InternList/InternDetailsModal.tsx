@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./InternDetailsModal.module.css";
+import { getAssetUrl, getBaseUrl } from "../../services/api";
 
 interface Attendance {
   _id: string;
@@ -70,7 +71,7 @@ export default function InternDetailsModal({
       try {
         // Fetch attendance logs
         const attendanceResponse = await fetch(
-          `http://localhost:10533/api/attendance/history/${intern._id}`,
+          `${getBaseUrl()}/attendance/history/${intern._id}`,
           {
             credentials: "include",
             headers: {
@@ -85,7 +86,7 @@ export default function InternDetailsModal({
 
         // Fetch task logs
         const taskResponse = await fetch(
-          `http://localhost:10533/api/task/intern/${intern._id}`,
+          `${getBaseUrl()}/task/intern/${intern._id}`,
           {
             credentials: "include",
             headers: {
@@ -131,9 +132,7 @@ export default function InternDetailsModal({
         <div className={styles.modalHeader}>
           <div className={styles.internInfo}>
             <img
-              src={
-                `http://localhost:10533${intern.photo}` || "/default-avatar.jpg"
-              }
+              src={`${getAssetUrl()}${intern.photo}` || "/default-avatar.jpg"}
               alt={intern.name}
               className={styles.internPhoto}
             />
@@ -290,7 +289,9 @@ export default function InternDetailsModal({
                               </span>
                               {log.proofOfCompletion && (
                                 <a
-                                  href={`http://localhost:10533${log.proofOfCompletion.value}`}
+                                  href={`${getAssetUrl()}${
+                                    log.proofOfCompletion.value
+                                  }`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className={styles.proofLink}

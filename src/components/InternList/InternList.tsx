@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import styles from "./InternList.module.css";
 import InternDetailsModal from "./InternDetailsModal";
+import { getAssetUrl, getBaseUrl } from "../../services/api";
 
 interface Intern {
   _id: string;
@@ -23,7 +24,10 @@ export default function InternList() {
     const fetchInterns = async () => {
       try {
         const response = await fetch(
-          `http://localhost:10533/api/user/interns/${user?._id}`
+          `${getBaseUrl()}/user/interns/${user?._id}`,
+          {
+            credentials: "include",
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch interns");
@@ -78,8 +82,7 @@ export default function InternList() {
                 <td className={styles.td}>
                   <img
                     src={
-                      `http://localhost:10533${intern.photo}` ||
-                      "/default-avatar.jpg"
+                      `${getAssetUrl()}${intern.photo}` || "/default-avatar.jpg"
                     }
                     alt={intern.name}
                     className={styles.avatar}

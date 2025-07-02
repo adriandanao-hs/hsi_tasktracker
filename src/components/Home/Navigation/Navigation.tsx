@@ -4,6 +4,7 @@ import ActionCard from "./Action/ActionCard";
 import styles from "./Navigation.module.css";
 import { useUser } from "../../../context/UserContext";
 import { Announcement } from "../../../types";
+import { getBaseUrl } from "../../../services/api";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
 
@@ -37,14 +38,10 @@ export default function Navigation() {
     if (!user) return;
 
     try {
-      const res = await fetch(
-        `http://localhost:10533/api/task?role=${user.role}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await res.json();
+      const response = await fetch(`${getBaseUrl()}/task?role=${user.role}`, {
+        credentials: "include",
+      });
+      const data = await response.json();
       setTasks(data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -63,10 +60,13 @@ export default function Navigation() {
         .map((dept) => `department=${encodeURIComponent(dept)}`)
         .join("&");
 
-      const res = await fetch(
-        `http://localhost:10533/api/announcement?${departmentParams}`
+      const response = await fetch(
+        `${getBaseUrl()}/announcement?${departmentParams}`,
+        {
+          credentials: "include",
+        }
       );
-      const data = await res.json();
+      const data = await response.json();
       setAnnouncements(data);
     } catch (error) {
       console.error("Error fetching announcements:", error);

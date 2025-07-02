@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import styles from "./TaskModal.module.css";
+import { getBaseUrl } from "../../../../services/api";
 
 interface TaskModalProps {
   onClose: () => void;
@@ -92,19 +93,21 @@ export default function TaskModal({
     setError("");
 
     try {
-      const response = await fetch("http://localhost:10533/api/task/create", {
+      const taskData = {
+        taskName: formData.taskName.trim(),
+        dayTime: formData.dayTime,
+        department: formData.department,
+        subject: formData.subject.trim(),
+        details: formData.details.trim(),
+      };
+
+      const response = await fetch(`${getBaseUrl()}/task/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          taskName: formData.taskName.trim(),
-          dayTime: formData.dayTime,
-          department: formData.department,
-          subject: formData.subject.trim(),
-          details: formData.details.trim(),
-        }),
-        credentials: "include",
+        body: JSON.stringify(taskData),
       });
 
       if (!response.ok) {

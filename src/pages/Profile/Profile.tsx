@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import defaultAvatar from "../../images/default-avatart.jpg";
-import { apiService } from "../../services/api";
+import { apiService, getAssetUrl } from "../../services/api";
 import Navbar from "../../components/Navbar/Navbar";
 import styles from "./Profile.module.css";
 
@@ -44,9 +44,9 @@ export default function Profile() {
             <div className={styles.photoContainer}>
               <div className={styles.photoWrapper}>
                 <img
-                  src={`http://localhost:10533${user.photo}` || defaultAvatar}
+                  className={styles.profileImage}
+                  src={`${getAssetUrl()}${user.photo}` || defaultAvatar}
                   alt="Profile"
-                  className={styles.photo}
                 />
                 <label htmlFor="photo-upload" className={styles.editButton}>
                   <svg

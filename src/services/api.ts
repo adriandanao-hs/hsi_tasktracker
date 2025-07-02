@@ -6,8 +6,8 @@ import {
   User,
 } from "../types";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:10533/api";
+export const getBaseUrl = () => process.env.REACT_APP_API_URL || "http://localhost:10533/api";
+export const getAssetUrl = () => process.env.REACT_APP_API_URL?.replace('/api', '') || "http://localhost:10533";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -28,7 +28,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
 export const apiService = {
   login: async (credentials: LoginCredentials) => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${getBaseUrl()}/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -40,7 +40,7 @@ export const apiService = {
   },
 
   register: async (userData: RegisterData) => {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    const response = await fetch(`${getBaseUrl()}/auth/register`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -52,7 +52,7 @@ export const apiService = {
   },
 
   logout: async () => {
-    const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+    const response = await fetch(`${getBaseUrl()}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -60,7 +60,7 @@ export const apiService = {
   },
 
   getCurrentUser: async () => {
-    const response = await fetch(`${API_BASE_URL}/user/me`, {
+    const response = await fetch(`${getBaseUrl()}/user/me`, {
       credentials: "include",
     });
     return handleResponse<User>(response);
@@ -70,7 +70,7 @@ export const apiService = {
     const formData = new FormData();
     formData.append("photo", photo);
 
-    const response = await fetch(`${API_BASE_URL}/user/update-photo`, {
+    const response = await fetch(`${getBaseUrl()}/user/update-photo`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -79,7 +79,7 @@ export const apiService = {
   },
 
   getInterns: async (userId: string) => {
-    const response = await fetch(`${API_BASE_URL}/user/interns/${userId}`, {
+    const response = await fetch(`${getBaseUrl()}/user/interns/${userId}`, {
       credentials: "include",
     });
     return handleResponse<User[]>(response);

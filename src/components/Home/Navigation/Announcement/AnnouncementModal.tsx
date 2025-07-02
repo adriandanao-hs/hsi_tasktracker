@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import styles from "./AnnouncementModal.module.css";
+import { getBaseUrl } from "../../../../services/api";
 
 interface AnnouncementModalProps {
   onClose: () => void;
@@ -103,22 +104,21 @@ export default function AnnouncementModal({
     setError("");
 
     try {
-      const response = await fetch(
-        "http://localhost:10533/api/announcement/post",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: formData.title.trim(),
-            message: formData.message.trim(),
-            departments: formData.departments,
-            expiresAt: formData.expiresAt || undefined,
-          }),
-          credentials: "include",
-        }
-      );
+      const announcementData = {
+        title: formData.title.trim(),
+        message: formData.message.trim(),
+        departments: formData.departments,
+        expiresAt: formData.expiresAt || undefined,
+      };
+
+      const response = await fetch(`${getBaseUrl()}/announcement/post`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(announcementData),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

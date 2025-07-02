@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import styles from "./TaskDetailModal.module.css";
 import { Task } from "../../../../types";
 import { useUser } from "../../../../context/UserContext";
+import { getBaseUrl, getAssetUrl } from "../../../../services/api";
 
 interface TaskDetailModalProps {
   taskId: string;
@@ -48,12 +49,9 @@ export default function TaskDetailModal({
 
   const fetchTask = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:10533/api/task/${taskId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${getBaseUrl()}/task/${taskId}`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         if (response.status === 403) {
@@ -106,26 +104,20 @@ export default function TaskDetailModal({
         if (proofFile) {
           formData.append("proofFile", proofFile);
         }
-        response = await fetch(
-          `http://localhost:10533/api/task/${taskId}/status`,
-          {
-            method: "PUT",
-            body: formData,
-            credentials: "include",
-          }
-        );
+        response = await fetch(`${getBaseUrl()}/task/${taskId}/status`, {
+          method: "PUT",
+          body: formData,
+          credentials: "include",
+        });
       } else {
-        response = await fetch(
-          `http://localhost:10533/api/task/${taskId}/status`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: statusUpdate.status }),
-            credentials: "include",
-          }
-        );
+        response = await fetch(`${getBaseUrl()}/task/${taskId}/status`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: statusUpdate.status }),
+          credentials: "include",
+        });
       }
 
       if (!response.ok) {
@@ -314,7 +306,9 @@ export default function TaskDetailModal({
                               log.proofOfCompletion &&
                               setProofModal({
                                 type: log.proofOfCompletion.type,
-                                value: `http://localhost:10533/api/task${log.proofOfCompletion.value}`,
+                                value: `${getAssetUrl()}/api/task${
+                                  log.proofOfCompletion.value
+                                }`,
                               })
                             }
                           >

@@ -5,6 +5,7 @@ import { useUser } from "../../context/UserContext";
 import { useTheme } from "../../hooks/useTheme";
 import { actions } from "./navbarData";
 import styles from "./Navbar.module.css";
+import { getBaseUrl, getAssetUrl } from "../../services/api";
 
 import ChronoLogoWhite from "../../images/chrono_logo_white.png";
 import defaultAvatar from "../../images/default-avatart.jpg";
@@ -102,7 +103,7 @@ export default function Navbar() {
               aria-label="Open profile menu"
             >
               <img
-                src={`http://localhost:10533${user?.photo}` || defaultAvatar}
+                src={`${getAssetUrl()}${user?.photo}` || defaultAvatar}
                 alt="Profile"
                 className={styles.profileImage}
               />
