@@ -32,6 +32,10 @@ export default function AttendanceModal({
       setLoading(true);
       setError("");
       try {
+        console.log(
+          "Fetching from: ",
+          `${getBaseUrl()}/attendance/history/${user?._id}`
+        );
         const res = await fetch(
           `${getBaseUrl()}/attendance/history/${user?._id}`,
           {
