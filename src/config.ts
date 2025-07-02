@@ -10,5 +10,5 @@ export const getCookieConfig = (): CookieOptions => ({
   secure: process.env.NODE_ENV === "production",
   sameSite: process.env.NODE_ENV === "production" ? "none" as const : "strict" as const,
   maxAge: 3600000, // 1 hour
-  domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined,
+  path: "/"
 });
