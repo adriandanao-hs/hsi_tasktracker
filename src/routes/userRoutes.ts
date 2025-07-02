@@ -9,10 +9,7 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 // Set up multer for file uploads
-const uploadDir = path.join(__dirname, "../../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+const uploadDir = '/tmp';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
