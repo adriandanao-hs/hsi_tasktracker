@@ -11,7 +11,7 @@
 }
 
 .navLinks {
-  @apply flex flex-col space-y-2 mt-10;
+  @apply flex flex-col space-y-1;
 }
 
 .bottomLinks {
