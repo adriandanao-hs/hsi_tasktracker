@@ -84,5 +84,7 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
+console.log("HSI Task Tracker backend is ready.");
+
 // Export the Express app for Vercel
 export default app;
