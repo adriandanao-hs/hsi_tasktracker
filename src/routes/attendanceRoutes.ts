@@ -3,11 +3,13 @@ import Attendance from "../schemas/Attendance";
 import { COOKIE_NAME, JWT_SECRET } from "../config";
 import jwt from "jsonwebtoken";
 import { User } from "../schemas/User";
+import dbConnect from "../lib/db";
 
 const router = Router();
 
 // Check-in route
 router.post("/checkin", async (req, res) => {
+  await dbConnect();
   try {
     const { userId, notes } = req.body;
     const today = new Date();
@@ -38,6 +40,7 @@ router.post("/checkin", async (req, res) => {
 
 // Check-out route
 router.post("/checkout", async (req, res) => {
+  await dbConnect();
   try {
     const { userId } = req.body;
     const today = new Date();
@@ -66,6 +69,7 @@ router.post("/checkout", async (req, res) => {
 
 // Attendance history route
 router.get("/history/:userId", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });

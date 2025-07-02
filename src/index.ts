@@ -23,39 +23,35 @@ app.use((req, res, next) => {
   next();
 });
 
-const allowedOrigins = ['https://hsi-tasktracker.vercel.app'];
+const allowedOrigins = ["https://hsi-tasktracker.vercel.app"];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
-  exposedHeaders: ['Set-Cookie'],
-  maxAge: 86400
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Origin",
+      "Accept",
+      "X-Requested-With",
+    ],
+    exposedHeaders: ["Set-Cookie"],
+    maxAge: 86400,
+  })
+);
 
-app.options('*', cors());
+app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Connect to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/hsi";
-
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error);
-  });
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -74,20 +70,27 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err);
-  console.error('Stack:', err.stack);
-  
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).json({ message: err.message });
-    return;
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error("Error:", err);
+    console.error("Stack:", err.stack);
+
+    if (err.name === "UnauthorizedError") {
+      res.status(401).json({ message: err.message });
+      return;
+    }
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
   }
-  
-  res.status(500).json({ 
-    message: 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
+);
 
 // Schedule a cron job to soft delete overdue tasks every minute
 if (process.env.NODE_ENV !== "development") {
@@ -99,7 +102,11 @@ if (process.env.NODE_ENV !== "development") {
         { $set: { deleted: true, deletedAt: now } }
       );
       if (result.modifiedCount > 0) {
-        console.log(`[CRON] Soft deleted ${result.modifiedCount} overdue tasks at ${now.toISOString()}`);
+        console.log(
+          `[CRON] Soft deleted ${
+            result.modifiedCount
+          } overdue tasks at ${now.toISOString()}`
+        );
       }
     } catch (error) {
       console.error("[CRON] Error soft deleting overdue tasks:", error);

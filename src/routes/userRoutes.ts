@@ -5,11 +5,15 @@ import path from "path";
 import fs from "fs";
 import { COOKIE_NAME, JWT_SECRET } from "../config";
 import jwt from "jsonwebtoken";
+import dbConnect from "../lib/db";
 
 const router = Router();
 
 // Set up multer for file uploads
-const uploadDir = process.env.NODE_ENV === 'production' ? '/tmp' : path.join(__dirname, '../../uploads');
+const uploadDir =
+  process.env.NODE_ENV === "production"
+    ? "/tmp"
+    : path.join(__dirname, "../../uploads");
 
 // Ensure upload directory exists
 if (!fs.existsSync(uploadDir)) {
@@ -26,19 +30,23 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB limit
-  }
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
 });
 
 // Get user profile
 router.get("/me", async (req, res) => {
+  await dbConnect();
   // Add CORS headers for preflight
-  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://hsi-tasktracker.vercel.app"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+
   const token = req.cookies?.[COOKIE_NAME];
 
   if (!token) {
@@ -75,10 +83,14 @@ router.get("/me", async (req, res) => {
 
 // Update user photo
 router.post("/update-photo", upload.single("photo"), async (req, res) => {
+  await dbConnect();
   // Add CORS headers for preflight
-  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://hsi-tasktracker.vercel.app"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+
   const token = req.cookies?.[COOKIE_NAME];
 
   if (!token) {
@@ -101,7 +113,7 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
     }
 
     // Delete old photo if it exists
-    if (user.photo && user.photo !== '/uploads/default-avatar.jpg') {
+    if (user.photo && user.photo !== "/uploads/default-avatar.jpg") {
       const oldPhotoPath = path.join(uploadDir, path.basename(user.photo));
       if (fs.existsSync(oldPhotoPath)) {
         fs.unlinkSync(oldPhotoPath);
@@ -109,10 +121,11 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
     }
 
     // Update user photo path based on environment
-    const photoPath = process.env.NODE_ENV === 'production' 
-      ? `/uploads/${req.file.filename}`
-      : `/uploads/${req.file.filename}`;
-    
+    const photoPath =
+      process.env.NODE_ENV === "production"
+        ? `/uploads/${req.file.filename}`
+        : `/uploads/${req.file.filename}`;
+
     user.photo = photoPath;
     await user.save();
 
@@ -128,10 +141,14 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
 
 // Get interns by department head
 router.get("/interns/:userId", async (req, res) => {
+  await dbConnect();
   // Add CORS headers for preflight
-  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://hsi-tasktracker.vercel.app"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+
   try {
     const { userId } = req.params;
 

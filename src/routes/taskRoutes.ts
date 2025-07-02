@@ -8,6 +8,7 @@ import fs from "fs";
 import express from "express";
 import { model } from "mongoose";
 import { User } from "../schemas/User";
+import dbConnect from "../lib/db";
 
 const router = Router();
 
@@ -15,6 +16,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // GET /api/task - Get tasks for current user (intern: their own, dept head: all in their depts)
 router.get("/", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -56,6 +58,7 @@ router.get("/", async (req, res) => {
 
 // GET /api/task/:id - Get specific task by ID
 router.get("/:id", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -108,6 +111,7 @@ router.get("/:id", async (req, res) => {
 
 // PUT /api/task/:id/status - Update task status
 router.put("/:id/status", upload.single("proofFile"), async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -150,7 +154,9 @@ router.put("/:id/status", upload.single("proofFile"), async (req, res) => {
         }
         proofOfCompletion = {
           type: "file" as const,
-          value: `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+          value: `data:${req.file.mimetype};base64,${req.file.buffer.toString(
+            "base64"
+          )}`,
         };
       }
       // Update the intern's log
@@ -181,6 +187,7 @@ router.put("/:id/status", upload.single("proofFile"), async (req, res) => {
 
 // POST /api/task/create
 router.post("/create", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -232,6 +239,7 @@ router.post("/create", async (req, res) => {
 
 // GET /api/task/intern/:userId - Get all tasks for a specific intern
 router.get("/intern/:userId", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -279,6 +287,7 @@ router.get("/intern/:userId", async (req, res) => {
 
 // POST /api/task/soft-delete-overdue - Soft delete tasks past due date/time
 router.post("/soft-delete-overdue", async (req, res) => {
+  await dbConnect();
   try {
     const now = new Date();
     const result = await Task.updateMany(

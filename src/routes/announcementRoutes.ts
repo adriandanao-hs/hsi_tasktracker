@@ -2,10 +2,12 @@ import { Router } from "express";
 import { Announcement } from "../schemas/Announcements";
 import { COOKIE_NAME, JWT_SECRET } from "../config";
 import jwt from "jsonwebtoken";
+import dbConnect from "../lib/db";
 
 const router = Router();
 
 router.post("/post", async (req, res) => {
+  await dbConnect();
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
@@ -44,6 +46,7 @@ router.post("/post", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  await dbConnect();
   const { department } = req.query;
 
   try {
