@@ -35,6 +35,10 @@ const upload = multer({
 
 // Get user profile
 router.get("/me", async (req, res) => {
+  // Add CORS headers for preflight
+  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   const token = req.cookies?.[COOKIE_NAME];
 
   if (!token) {
