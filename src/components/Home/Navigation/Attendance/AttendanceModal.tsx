@@ -57,14 +57,16 @@ export default function AttendanceModal({
         const todayDate = phTime.getDate();
 
         const todayRecord = records.find((r) => {
-          const utcDate = new Date(r.date);
-          const localDate = new Date(
-            utcDate.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+          if (!r.checkIn) return false;
+          const checkInDate = new Date(r.checkIn);
+          const checkInPh = new Date(
+            checkInDate.toLocaleString("en-US", { timeZone: "Asia/Manila" })
           );
+
           return (
-            localDate.getFullYear() === todayYear &&
-            localDate.getMonth() === todayMonth &&
-            localDate.getDate() === todayDate
+            checkInPh.getFullYear() === todayYear &&
+            checkInPh.getMonth() === todayMonth &&
+            checkInPh.getDate() === todayDate
           );
         });
 
