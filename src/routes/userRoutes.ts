@@ -35,6 +35,10 @@ const upload = multer({
 
 // Get user profile
 router.get("/me", async (req, res) => {
+  // Add CORS headers for preflight
+  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   const token = req.cookies?.[COOKIE_NAME];
 
   if (!token) {
@@ -71,6 +75,10 @@ router.get("/me", async (req, res) => {
 
 // Update user photo
 router.post("/update-photo", upload.single("photo"), async (req, res) => {
+  // Add CORS headers for preflight
+  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   const token = req.cookies?.[COOKIE_NAME];
 
   if (!token) {
@@ -120,6 +128,10 @@ router.post("/update-photo", upload.single("photo"), async (req, res) => {
 
 // Get interns by department head
 router.get("/interns/:userId", async (req, res) => {
+  // Add CORS headers for preflight
+  res.header('Access-Control-Allow-Origin', 'https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   try {
     const { userId } = req.params;
 
