@@ -49,16 +49,22 @@ export default function AttendanceModal({
         const records: AttendanceRecord[] = await res.json();
         // Find today's record
         const today = new Date();
-        const todayYear = today.getFullYear();
-        const todayMonth = today.getMonth();
-        const todayDate = today.getDate();
+        const phTime = new Date(
+          today.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+        );
+        const todayYear = phTime.getFullYear();
+        const todayMonth = phTime.getMonth();
+        const todayDate = phTime.getDate();
 
         const todayRecord = records.find((r) => {
-          const d = new Date(r.date);
+          const utcDate = new Date(r.date);
+          const localDate = new Date(
+            utcDate.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+          );
           return (
-            d.getFullYear() === todayYear &&
-            d.getMonth() === todayMonth &&
-            d.getDate() === todayDate
+            localDate.getFullYear() === todayYear &&
+            localDate.getMonth() === todayMonth &&
+            localDate.getDate() === todayDate
           );
         });
 
@@ -143,12 +149,16 @@ export default function AttendanceModal({
   const formatTime = (iso?: string) => {
     if (!iso) return "-";
     const d = new Date(iso);
-    const date = d.toLocaleDateString([], {
+    const local = new Date(
+      d.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+    );
+    console.log("Formatting time:", iso, "->", d.toLocaleString());
+    const date = local.toLocaleDateString("en-PH", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-    const time = d.toLocaleTimeString([], {
+    const time = d.toLocaleTimeString("en-PH", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
@@ -170,6 +180,8 @@ export default function AttendanceModal({
     if (checkedIn) return "Currently working";
     return "Not checked in";
   };
+
+  console.log(attendance);
 
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
