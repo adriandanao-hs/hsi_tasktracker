@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: "https://hsi-tasktracker-git-frontend-adriandanao-hs-projects.vercel.app",
+  origin: "https://hsi-tasktracker.vercel.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
