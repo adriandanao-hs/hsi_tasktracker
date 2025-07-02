@@ -11,21 +11,7 @@ import { User } from "../schemas/User";
 
 const router = Router();
 
-// Set up multer for file uploads
-const uploadDir = path.join(__dirname, "../../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 // GET /api/task - Get tasks for current user (intern: their own, dept head: all in their depts)
 router.get("/", async (req, res) => {
@@ -164,7 +150,7 @@ router.put("/:id/status", upload.single("proofFile"), async (req, res) => {
         }
         proofOfCompletion = {
           type: "file" as const,
-          value: `/uploads/${req.file.filename}`,
+          value: `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
         };
       }
       // Update the intern's log
@@ -304,11 +290,6 @@ router.post("/soft-delete-overdue", async (req, res) => {
     console.error("Error soft deleting overdue tasks:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-
-// Serve uploaded files statically
-router.use("/uploads", (req, res, next) => {
-  express.static(uploadDir)(req, res, next);
 });
 
 export default router;
