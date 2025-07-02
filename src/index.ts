@@ -17,15 +17,10 @@ dotenv.config();
 
 const app = express();
 
-const corsOptions = {
-  origin: "https://hsi-tasktracker.vercel.app", // ✅ use frontend domain here
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // ✅ this handles preflight requests
+app.use(cors({
+  origin: "https://hsi-tasktracker.vercel.app",
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());
